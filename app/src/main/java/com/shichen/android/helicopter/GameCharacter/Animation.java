@@ -14,7 +14,8 @@ public class Animation {
 
     private long startswimmingTime;   // used to record times between two posture updates
 
-    private boolean ifhasstartedswim; // determine if the fish has swimed at least once
+
+    private boolean ifDoneOnce = false;
 
 
     public void setPostures(Bitmap[] postures) {
@@ -42,7 +43,7 @@ public class Animation {
         }
         if(currentPostureIndex == postures.length){
             currentPostureIndex = 0;
-            ifhasstartedswim = true;
+            ifDoneOnce = true;
         }
     }
 
@@ -57,5 +58,5 @@ public class Animation {
     }
 
 
-    public boolean getIfhasstartedswim(){return ifhasstartedswim;}
+    public boolean getIfhasDoneOnce(){return ifDoneOnce;}
 }

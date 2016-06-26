@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by hsctn on 2016-06-25.
  */
 public class PuffCommander {
-    private ArrayList<WaterPuff> puff;
+    public ArrayList<WaterPuff> puff;
     private Fish fish;
     public long puffStartAppearTime;
     private long elaspedTime;
@@ -46,5 +46,7 @@ public class PuffCommander {
         }
     }
 
-
+    public void setIfFirstPuffInThisRound(boolean ifFirstPuffInThisRound) {
+        this.ifFirstPuffInThisRound = ifFirstPuffInThisRound;
+    }
 }

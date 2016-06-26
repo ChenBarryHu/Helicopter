@@ -19,6 +19,8 @@ public class Background {
                             // of the background picture
     public Background(Bitmap res){
         image = res;
+        x=0;
+        y=0;
         dx = GamePanel.MOVESPEED;
     }
 
@@ -36,5 +38,6 @@ public class Background {
         if(x<0){
             canvas.drawBitmap(image, x+GamePanel.WIDTH, y,null);
         }
+
     }
 }

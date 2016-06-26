@@ -26,7 +26,7 @@ public class Fish extends GameObject {
     private boolean ifScreenPressed;
 
     // determine if we are playing the game, the status of the player
-    private boolean Ifcurrentlyplaying;
+    private boolean Ifcurrentlyplaying = false;
     // create a new animation object
     private boolean firstUpdate;
     private Animation animation;
@@ -50,15 +50,15 @@ public class Fish extends GameObject {
         score = 0;
 
         firstUpdate = true;     // used to calculate elapsed time keep reading the
-                                // code and you will get it
+        // code and you will get it
 
         Bitmap[] postures = new Bitmap[numOfPostures];// numOfPostures means how many different
-                                                      // images we are using to show the animation
+        // images we are using to show the animation
         spritesheet = setOfPostures;
 
         for (int i = 0; i < postures.length; i++) {
-                                    // createBitmap Returns an immutable bitmap from the specified subset of the
-                                    // source bitmap, we cut the sprite sheet to seperate each individual image for animation
+            // createBitmap Returns an immutable bitmap from the specified subset of the
+            // source bitmap, we cut the sprite sheet to seperate each individual image for animation
             postures[i] = Bitmap.createBitmap(spritesheet, i * width, 0, width, height);
         }
 
@@ -67,9 +67,7 @@ public class Fish extends GameObject {
     }
 
 
-
-
-    public void setIfScreenPressed(boolean ifScreenPressed){ // set if the screen is being touched
+    public void setIfScreenPressed(boolean ifScreenPressed) { // set if the screen is being touched
         this.ifScreenPressed = ifScreenPressed;
     }
 
@@ -96,7 +94,7 @@ public class Fish extends GameObject {
             pos_y = (int) (pos_y + dY);
             Velocity_y = (int) (Velocity_y + realAcceleration * elapsed);
         }
-                    // the folloeing code makes sure that the fish wouldn't get out of the screen
+        // the folloeing code makes sure that the fish wouldn't get out of the screen
         if (pos_y < 0) {
             pos_y = 0;
             Velocity_y = 0;
@@ -105,7 +103,7 @@ public class Fish extends GameObject {
             pos_y = GamePanel.HEIGHT - this.heightInSpriteSheet;
             Velocity_y = 0;
         }
-        Log.e("From fish:","The pos_y of the fish is "+pos_y);
+        Log.e("From fish:", "The pos_y of the fish is " + pos_y);
 
     }
 

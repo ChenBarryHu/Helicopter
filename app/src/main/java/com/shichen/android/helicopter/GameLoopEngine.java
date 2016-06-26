@@ -74,6 +74,7 @@ public class GameLoopEngine extends Thread {
                                                     //      GamePanel, that means we draw something in the surfaceView
                                                     //      (which is GamePanel)
                 canvas = null;
+                Log.e("GameEngine Log", "Another new game loop");
                 try {
                     canvas = this.surfaceHolder.lockCanvas();
                     synchronized (surfaceHolder) {
