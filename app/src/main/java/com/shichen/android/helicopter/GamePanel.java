@@ -124,7 +124,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 resetModeStart = false;
                 fish.setIfcurrentlyplaying(true);
                 fish.setIfScreenPressed(true);
-                monsterCommander.initializeBats();
                 newGameWellPrepared = false;
             } else if(fish.getIfcurrentlyplaying()){
                 fish.setIfScreenPressed(true);
@@ -239,8 +238,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void newGame()
     {
         // clear the puff, monster and bat from last round
-        monsterCommander.botBats.clear();
-        monsterCommander.topBats.clear();
         monsterCommander.monsters.clear();
         puffCommander.puff.clear();
 

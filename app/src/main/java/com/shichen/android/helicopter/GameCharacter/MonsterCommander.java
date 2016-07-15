@@ -24,8 +24,7 @@ public class MonsterCommander {
 
     // these are the monsters
     public ArrayList<Bird> monsters;
-    public ArrayList<TopBat> topBats;
-    public ArrayList<BotBat> botBats;
+
 
     // this variable is used to determine when to create monsters
     public long monsterStartAppearTime;
@@ -44,8 +43,6 @@ public class MonsterCommander {
     private final int heightForColorfulBird = 64;
     private final int widthForBigEyeBlue = 146;
     private final int heightForBigEyeBlue = 100;
-    public Bitmap resForTopBat;
-    private Bitmap resForBotBat;
     private Bitmap[] resForBigYellow = new Bitmap[2];
     private Bitmap resForColorfulBird;
     private Bitmap[] resForBigEyeBlue = new Bitmap[8];
@@ -53,8 +50,6 @@ public class MonsterCommander {
     public MonsterCommander(Context context, Fish fish) {
         this.fish = fish;
         this.monsters = new ArrayList<Bird>();
-        this.botBats = new ArrayList<BotBat>();
-        this.topBats = new ArrayList<TopBat>();
         this.random = new Random();
         this.score = Fish.score;
         this.context = context;
@@ -69,8 +64,6 @@ public class MonsterCommander {
         this.resForBigEyeBlue[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bbe6);
         this.resForBigEyeBlue[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bbe7);
         this.resForBigEyeBlue[7] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bbe8);
-        this.resForTopBat = BitmapFactory.decodeResource(context.getResources(), R.drawable.topbat);
-        this.resForBotBat = BitmapFactory.decodeResource(context.getResources(), R.drawable.botbat);
     }
 
     private int selectBird() {
@@ -84,29 +77,17 @@ public class MonsterCommander {
         }
     }
 
-    public void initializeBats() {
-        for (int i = 0; i * 140 < 1280; i++) {
-            topBats.add(new TopBat(resForTopBat, 140 * i));
-        }
-        for (int i = 0; i * 140 < 1280; i++) {
-            botBats.add(new BotBat(resForBotBat, 140 * i));
-        }
-    }
 
 
     public void update() {
         if (!ifMonsterOccurInThisRound) {
-            if (topBats.size() < 9 || botBats.size() < 9) {
-                fish.setIfcurrentlyplaying(false);
-                return;
-            }
             monsterStartAppearTime = System.nanoTime();
             ifMonsterOccurInThisRound = true;
         }
         elaspedTime = (System.nanoTime() - monsterStartAppearTime) / 1000000;
 
 
-        if (fish.pos_y < 30 || fish.pos_y > 580) {
+        if (fish.pos_y < 20 || fish.pos_y > 546) {
             fish.setIfcurrentlyplaying(false);
         }
 //        for(int i = 0; i<botBats.size(); i++){
@@ -171,12 +152,6 @@ public class MonsterCommander {
     public void draw(Canvas canvas) {
         for (Bird bird : monsters) {
             bird.draw(canvas);
-        }
-        for (TopBat bat : topBats) {
-            bat.draw(canvas);
-        }
-        for (BotBat bat : botBats) {
-            bat.draw(canvas);
         }
     }
 
