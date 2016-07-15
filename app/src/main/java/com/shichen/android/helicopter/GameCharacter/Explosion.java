@@ -5,7 +5,6 @@ package com.shichen.android.helicopter.GameCharacter;
  */
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.shichen.android.helicopter.GamePanel;
 
@@ -24,7 +23,6 @@ public class Explosion{
             if(i%8==0&&i>0)row++;
             image[i] = Bitmap.createBitmap(res, (i-(8*row))*width, row*height, width, height);
         }
-        Log.e( "Explosion: ","xixi" );
         animation.setPostures(image);
         animation.setRestTimeforFish(10);
     }
@@ -47,8 +45,11 @@ public class Explosion{
 
     public void update()
     {
+
+
         if(!animation.getIfhasDoneOnce())
         {
+
             animation.update();
         }
         if(animation.getIfhasDoneOnce()){

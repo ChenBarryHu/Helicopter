@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -46,8 +47,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private boolean newGameWellPrepared = true;
     private boolean resetModeStart = false;
     private boolean fishNeedDisappear = false;
-    public static boolean explosionStart =false;
-    public static boolean explosionFinish = false;
+    public  static boolean explosionStart =false;
+    public  static boolean explosionFinish = false;
     private boolean justOpened = true;
 
 
@@ -78,6 +79,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {   // This is called immediately after the surface is first created.
 
+        explosionStart =false;
+        explosionFinish = false;
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
         fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish), 64, 64, 6);
         puffCommander = new PuffCommander(fish);
@@ -150,6 +153,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             }
             puffCommander.draw(canvas);
             monsterCommander.draw(canvas);
+            Log.e("explosion", "explosionStart "+explosionStart+"explosionFinish"+explosionFinish);
             if(explosionStart&& (!explosionFinish))
             {
                 explosion.draw(canvas);
@@ -186,19 +190,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 explosion.setY(fish.getPos_y()-70);
 
             }
-
-            explosion.update();
-            if(justOpened){
-                explosionStart = false;
-                explosionFinish = true;
-                newGame();
-                return;
-            }
-            long resetElapsed = (System.nanoTime()-startResetTime)/1000000;
-            if(resetElapsed > 2500 && explosionFinish)
-            {
-                explosionStart = false;
-                newGame();
+            if(!newGameWellPrepared) {
+                    explosion.update();
+                
+                if (justOpened) {
+                    explosionStart = false;
+                    explosionFinish = true;
+                    newGame();
+                    return;
+                }
+                long resetElapsed = (System.nanoTime() - startResetTime) / 1000000;
+                if (resetElapsed > 2500 && explosionFinish) {
+                    explosionStart = false;
+                    newGame();
+                }
             }
         }
     }
@@ -230,6 +235,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+
     public void newGame()
     {
         // clear the puff, monster and bat from last round
@@ -244,17 +250,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         fish.setFirstUpdate(true);
         puffCommander.setIfFirstPuffInThisRound(true);
         explosion.resetExplosion();
-
-
         if(!justOpened) {
             if (fish.getScore() > bestScore) {
-
                 bestScore = fish.getScore();
-
             }
         }
-
-
         fish.resetScore();
         fish.setVelocity_y(0);
         fish.setPos_y(HEIGHT/2);

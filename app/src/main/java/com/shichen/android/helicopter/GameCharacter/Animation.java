@@ -38,7 +38,6 @@ public class Animation {
         }
         // attention: the unit of elapsed is milisecond
         long timesBetweenTwoUpdates = (System.nanoTime() - startswimmingTime) / 1000000;
-
         if (timesBetweenTwoUpdates > restTimeforFish) {
             currentPostureIndex++;
             startswimmingTime = System.nanoTime();
@@ -55,6 +54,9 @@ public class Animation {
         return postures[currentPostureIndex];
     }
 
+    public int getCurrentPostureIndex() {
+        return currentPostureIndex;
+    }
 
     public boolean getIfhasDoneOnce() {
         return ifDoneOnce;

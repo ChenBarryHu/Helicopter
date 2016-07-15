@@ -18,8 +18,8 @@ public class Fish extends GameObject {
     public static int score;
 
 
-    private double gravityG = 6;
-    private double liftingAccelerate = -10;
+    private double gravityG = 7;
+    private double liftingAccelerate = -11;
     private double realAcceleration = 0;
     private int width;
     private int height;
