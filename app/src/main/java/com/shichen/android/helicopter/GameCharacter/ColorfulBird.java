@@ -30,8 +30,7 @@ public class ColorfulBird extends Bird{
         this.postures = new Bitmap[numOfPostures];
         this.speed = Fish.score/100+7 + (int) (random.nextDouble()*20); // We need to change here later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        if(speed>20)speed = 20; // bound bird's speed
-
+        if(speed>80)speed = 80;
         int color = selectColor();
         for(int i = 0; i<numOfPostures;i++)
         {
@@ -51,7 +50,6 @@ public class ColorfulBird extends Bird{
     @Override
     public void update()
     {
-        score = Fish.score;
         pos_x-=speed;
         animation.update();
     }
@@ -59,9 +57,7 @@ public class ColorfulBird extends Bird{
     @Override
     public void draw(Canvas canvas)
     {
-        try{
             canvas.drawBitmap(animation.getCurrentPosture(),pos_x,pos_y,null);
-        }catch(Exception e){}
     }
 
 //    @Override

@@ -2,7 +2,7 @@ package com.shichen.android.helicopter.GameCharacter;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
+import android.graphics.Rect;
 
 import java.util.Random;
 
@@ -29,9 +29,9 @@ public class BigyellowBird extends Bird {
         this.postures = postures;
 
         this.speed = Fish.score/100+7 + (int) (random.nextDouble() * 20);
-
-        if (speed > 30) speed = 30; // bound bird's speed
-
+        if(this.speed>=90){
+            this.speed = 90;
+        }
         animation.setPostures(postures);
         animation.setRestTimeforFish(100 - speed);
 
@@ -39,17 +39,17 @@ public class BigyellowBird extends Bird {
 
     @Override
     public void update() {
-        score = Fish.score;
         pos_x -= speed;
         animation.update();
     }
 
     @Override
     public void draw(Canvas canvas) {
-        Log.e("Speed", "The speed of yellow:" + this.speed);
-        try {
             canvas.drawBitmap(animation.getCurrentPosture(), pos_x, pos_y, null);
-        } catch (Exception e) {
-        }
+    }
+
+    @Override
+    public Rect getRectangle(){
+        return new Rect(pos_x+24, pos_y+23, pos_x+117, pos_y+112);
     }
 }

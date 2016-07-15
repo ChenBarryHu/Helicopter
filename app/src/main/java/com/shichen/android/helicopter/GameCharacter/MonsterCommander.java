@@ -21,10 +21,16 @@ import java.util.Random;
  * Created by hsctn on 2016-06-25.
  */
 public class MonsterCommander {
+
+    // these are the monsters
     public ArrayList<Bird> monsters;
     public ArrayList<TopBat> topBats;
     public ArrayList<BotBat> botBats;
+
+    // this variable is used to determine when to create monsters
     public long monsterStartAppearTime;
+
+
     public int score;
     private long elaspedTime;
     private Fish fish;
@@ -100,7 +106,7 @@ public class MonsterCommander {
         elaspedTime = (System.nanoTime() - monsterStartAppearTime) / 1000000;
 
 
-        if (fish.pos_y < 30 || fish.pos_y > 610) {
+        if (fish.pos_y < 30 || fish.pos_y > 580) {
             fish.setIfcurrentlyplaying(false);
         }
 //        for(int i = 0; i<botBats.size(); i++){
@@ -128,15 +134,17 @@ public class MonsterCommander {
             if (collision(monsters.get(i), fish)) {
                 monsters.remove(i);
                 fish.setIfcurrentlyplaying(false);
-                fish.setFirstUpdate(true);
                 break;
             }
-            if (monsters.get(i).getPos_x() < -64) {
+            if (monsters.get(i).getPos_x() < -180) {
                 monsters.remove(i);
             }
         }
 
-        int timeForMonsterOut = (int) (500 + random.nextFloat() * 3000);
+        int timeForMonsterOut = (int) (2000 + random.nextFloat() * 3000- Fish.score *10);
+        if(timeForMonsterOut < 500){
+            timeForMonsterOut = 500;
+        }
         if (elaspedTime > timeForMonsterOut) {
             birdSelector = selectBird();
             if (birdSelector == 0) {

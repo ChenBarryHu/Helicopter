@@ -3,7 +3,6 @@ package com.shichen.android.helicopter.GameCharacter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 
 import com.shichen.android.helicopter.GamePanel;
 
@@ -18,8 +17,9 @@ public class Fish extends GameObject {
     public static int score;
 
 
-    private double gravityG = 7;
-    private double liftingAccelerate = -11;
+
+    private double gravityG = 6;
+    private double liftingAccelerate = -10;
     private double realAcceleration = 0;
     private int width;
     private int height;
@@ -32,6 +32,7 @@ public class Fish extends GameObject {
     private boolean firstUpdate;
     private Animation animation;
     private long startTime;
+    private float timeForScore;
 
     // Fish's constructor, pass in bitmap(which is a spritesheet),
     // and how many different image in that bitmap
@@ -49,6 +50,7 @@ public class Fish extends GameObject {
 
         Velocity_y = 0;
         score = 0;
+        timeForScore = 0;
 
         firstUpdate = true;     // used to calculate elapsed time keep reading the
         // code and you will get it
@@ -72,14 +74,20 @@ public class Fish extends GameObject {
         this.ifScreenPressed = ifScreenPressed;
     }
 
+
     public void update() {
         if (firstUpdate) {
             firstUpdate = false;
             startTime = System.nanoTime();
         }
         double elapsed = ((System.nanoTime() - startTime) / 10000000f) / 10; // attention: this is milisecond
+        timeForScore += elapsed;
 
-        score++;
+        if(timeForScore>= 10) {
+            score++;
+            timeForScore-=10;
+        }
+
         startTime = System.nanoTime();    //update the startTime
 
         animation.update();
@@ -96,16 +104,15 @@ public class Fish extends GameObject {
             Velocity_y = (int) (Velocity_y + realAcceleration * elapsed);
         }
         // the folloeing code makes sure that the fish wouldn't get out of the screen
-        if (pos_y < 0) {
-            pos_y = 0;
-            Velocity_y = 0;
-        }
-        if (pos_y > (GamePanel.HEIGHT - this.heightInSpriteSheet)) {
-            pos_y = GamePanel.HEIGHT - this.heightInSpriteSheet;
-            Velocity_y = 0;
-        }
-        Log.e("From fish:", "The pos_y of the fish is " + pos_y);
-
+        // but since we have topbat and botbat now, they seems unnecessary
+//        if (pos_y < 0) {
+//            pos_y = 0;
+//            Velocity_y = 0;
+//        }
+//        if (pos_y > (GamePanel.HEIGHT - this.heightInSpriteSheet)) {
+//            pos_y = GamePanel.HEIGHT - this.heightInSpriteSheet;
+//            Velocity_y = 0;
+//        }
     }
 
     public void draw(Canvas canvas) {
@@ -117,24 +124,23 @@ public class Fish extends GameObject {
         return score;
     }
 
+
+    // these functions control the flow of the program
     public boolean getIfcurrentlyplaying() {
         return Ifcurrentlyplaying;
     }
-
     public void setIfcurrentlyplaying(boolean ifcurrentlyplaying) {
         Ifcurrentlyplaying = ifcurrentlyplaying;
     }
-
     public void setFirstUpdate(boolean firstUpdate) {
         this.firstUpdate = firstUpdate;
     }
-
     public void resetScore() {
         score = 0;
     }
 
     @Override
     public Rect getRectangle(){
-        return new Rect(pos_x, pos_y+10, pos_x+widthInSpriteSheet, pos_y+44);
+        return new Rect(pos_x, pos_y+11, pos_x+widthInSpriteSheet, pos_y+42);
     }
 }

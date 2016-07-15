@@ -186,13 +186,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 explosionFinish = false;
                 startResetTime = System.nanoTime();
                 fishNeedDisappear = true;
-                explosion.setX(fish.getPos_x()-50);
+                explosion.setX(fish.getPos_x()-60);
                 explosion.setY(fish.getPos_y()-70);
 
             }
             if(!newGameWellPrepared) {
                     explosion.update();
-                
+
                 if (justOpened) {
                     explosionStart = false;
                     explosionFinish = true;
@@ -219,7 +219,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(Color.BLACK);
         paint.setTextSize(30);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("Score: " + (fish.getScore()*3), 10, HEIGHT - 60, paint);
+        canvas.drawText("Score: " + fish.getScore(), 10, HEIGHT - 60, paint);
         canvas.drawText("BEST: " + bestScore, WIDTH - 215, HEIGHT - 60, paint);
 
         if(!fish.getIfcurrentlyplaying()&&newGameWellPrepared)
