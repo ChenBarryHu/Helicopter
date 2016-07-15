@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.shichen.android.helicopter.GameCharacter.BonusCommander;
 import com.shichen.android.helicopter.GameCharacter.Explosion;
 import com.shichen.android.helicopter.GameCharacter.Fish;
 import com.shichen.android.helicopter.GameCharacter.MonsterCommander;
@@ -38,6 +39,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Fish fish;                      // we will create our player character which is a cute little fish!!!
     private PuffCommander puffCommander;
     private MonsterCommander monsterCommander;
+    private BonusCommander bonusCommander;
     private Explosion explosion;
 
 
@@ -85,6 +87,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish), 64, 64, 6);
         puffCommander = new PuffCommander(fish);
         monsterCommander = new MonsterCommander(getContext(), fish);
+        bonusCommander = new BonusCommander(getContext(), fish);
         explosion = new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion));
         thread = new GameLoopEngine(getHolder(), this);
         thread.setIfRunning(true);
@@ -152,6 +155,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             }
             puffCommander.draw(canvas);
             monsterCommander.draw(canvas);
+            bonusCommander.draw(canvas);
             Log.e("explosion", "explosionStart "+explosionStart+"explosionFinish"+explosionFinish);
             if(explosionStart&& (!explosionFinish))
             {
@@ -173,6 +177,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             fish.update();
             puffCommander.update();
             monsterCommander.update();
+            bonusCommander.update();
 
 
             //Log.e("From game panel:","The pos_y of fish is "+ fish.pos_y);
@@ -239,11 +244,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     {
         // clear the puff, monster and bat from last round
         monsterCommander.monsters.clear();
+        bonusCommander.bonuses.clear();
         puffCommander.puff.clear();
 
 
         // reset the status of monstercommander, fish, and puffCommander
         monsterCommander.setIfMonsterOccurInThisRound(false);
+        bonusCommander.setIfBonusOccurInThisRound(false);
         fish.setFirstUpdate(true);
         puffCommander.setIfFirstPuffInThisRound(true);
         explosion.resetExplosion();

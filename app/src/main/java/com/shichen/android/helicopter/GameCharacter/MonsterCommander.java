@@ -90,26 +90,7 @@ public class MonsterCommander {
         if (fish.pos_y < 20 || fish.pos_y > 546) {
             fish.setIfcurrentlyplaying(false);
         }
-//        for(int i = 0; i<botBats.size(); i++){
-//            //botBats.get(i).update();
-//            //topBats.get(i).update();
-//
-//            if(collision(topBats.get(i), fish)) {
-//                fish.setIfcurrentlyplaying(false);
-//                fish.setFirstUpdate(true);
-//                fish.setVelocity_y(0);
-//                fish.setPos_y(GamePanel.HEIGHT/2);
-//                break;
-//            }
-//            if(collision(botBats.get(i), fish)) {
-//                fish.setIfcurrentlyplaying(false);
-//                fish.setFirstUpdate(true);
-//                fish.setVelocity_y(0);
-//                fish.setPos_y(GamePanel.HEIGHT/2);
-//                break;
-//            }
-//
-//        }
+
         for (int i = 0; i < monsters.size(); i++) {
             monsters.get(i).update();
             if (collision(monsters.get(i), fish)) {
@@ -132,7 +113,6 @@ public class MonsterCommander {
                 monsters.add(new BigyellowBird(resForBigYellow, GamePanel.WIDTH + 10,
                         (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForBigYellow))
                         , widthForBigYellow, heightForBigYellow, 2));
-                monsterStartAppearTime = System.nanoTime();
             } else if (birdSelector == 1) {
                 monsters.add(new ColorfulBird(resForColorfulBird, GamePanel.WIDTH + 10,
                         (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForColorfulBird)),
@@ -141,7 +121,6 @@ public class MonsterCommander {
                 monsters.add(new Bigeyebluebird(resForBigEyeBlue, GamePanel.WIDTH + 10,
                         (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForBigEyeBlue))
                         , widthForBigEyeBlue, heightForBigEyeBlue, 2));
-                monsterStartAppearTime = System.nanoTime();
             }
             monsterStartAppearTime = System.nanoTime();
         }

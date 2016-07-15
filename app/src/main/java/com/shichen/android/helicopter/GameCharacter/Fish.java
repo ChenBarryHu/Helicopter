@@ -103,16 +103,15 @@ public class Fish extends GameObject {
             pos_y = (int) (pos_y + dY);
             Velocity_y = (int) (Velocity_y + realAcceleration * elapsed);
         }
-        // the folloeing code makes sure that the fish wouldn't get out of the screen
-        // but since we have topbat and botbat now, they seems unnecessary
-//        if (pos_y < 0) {
-//            pos_y = 0;
-//            Velocity_y = 0;
-//        }
-//        if (pos_y > (GamePanel.HEIGHT - this.heightInSpriteSheet)) {
-//            pos_y = GamePanel.HEIGHT - this.heightInSpriteSheet;
-//            Velocity_y = 0;
-//        }
+
+        if (pos_y < 0) {
+            pos_y = 0;
+            Velocity_y = 0;
+        }
+        if (pos_y > (GamePanel.HEIGHT - this.heightInSpriteSheet)) {
+            pos_y = GamePanel.HEIGHT - this.heightInSpriteSheet;
+            Velocity_y = 0;
+        }
     }
 
     public void draw(Canvas canvas) {
