@@ -10,11 +10,9 @@ import android.graphics.Canvas;
                         // resource of the background picture
 public class Background {
     private Bitmap image;
-
                             // x and y determine the position of the left-top corner of the picture
                             // dx determine how much distance shift leftward every refreshment
     private int x, y, dx;
-
                             // constructor: get the resource (bitmap)
                             // of the background picture
     public Background(Bitmap res){
@@ -36,8 +34,7 @@ public class Background {
     public void draw(Canvas canvas){
         canvas.drawBitmap(image, x, y, null);
         if(x<0){
-            canvas.drawBitmap(image, x+GamePanel.WIDTH, y,null);
+            canvas.drawBitmap(image, x+GamePanel.WIDTH-5, y,null);
         }
-
     }
 }

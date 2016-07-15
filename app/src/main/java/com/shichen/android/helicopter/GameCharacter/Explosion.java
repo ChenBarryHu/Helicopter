@@ -5,48 +5,46 @@ package com.shichen.android.helicopter.GameCharacter;
  */
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.shichen.android.helicopter.GamePanel;
 
-public class Explosion {
+public class Explosion{
     private int x;
     private int y;
-    private int width;
-    private int height;
+    private int width = 200;
+    private int height = 200;
     private int row=0;
     private Animation animation = new Animation();
-    private Bitmap spritesheet;
-
-    public Explosion(Bitmap res, int x, int y, int w, int h, int numFrames)
+    private Bitmap[] image = new Bitmap[16];
+    public Explosion(Bitmap res)
     {
-        this.x = x;
-        this.y = y;
-        this.width = w;
-        this.height = h;
-
-        Bitmap[] image = new Bitmap[numFrames];
-
-        spritesheet = res;
-
         for(int i = 0; i<image.length; i++)
         {
             if(i%8==0&&i>0)row++;
-            image[i] = Bitmap.createBitmap(spritesheet, (i-(8*row))*width, row*height, width, height);
+            image[i] = Bitmap.createBitmap(res, (i-(8*row))*width, row*height, width, height);
         }
+        Log.e( "Explosion: ","xixi" );
         animation.setPostures(image);
         animation.setRestTimeforFish(10);
-
-
-
     }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public void draw(Canvas canvas)
     {
         if(!animation.getIfhasDoneOnce())
         {
-            canvas.drawBitmap(animation.getCurrentPosture(),x,y,null);
+            canvas.drawBitmap(animation.getCurrentPosture(),this.x,this.y,null);
         }
-
     }
+
     public void update()
     {
         if(!animation.getIfhasDoneOnce())
@@ -57,5 +55,9 @@ public class Explosion {
             GamePanel.explosionFinish = true;
         }
     }
-    public int getHeight(){return height;}
+
+    public void resetExplosion(){
+        animation.setIfDoneOnce(false);
+        animation.setIfFirstFrame(true);
+    }
 }

@@ -11,7 +11,7 @@ import android.view.SurfaceHolder;
 
 public class GameLoopEngine extends Thread {
     private int FPS = 40;                      // how many frame we want per second
-    private double framecap = 1.0 / FPS;       // this is the frequency of refresh the screen
+    private double framecap = 1.0 / FPS;       // this is the time of each frame of this game
 
     private SurfaceHolder surfaceHolder;       // surfaceholder and gamePanel object
     private GamePanel gamePanel;               //    use surfaceholder to get canvas, use gamePanel to

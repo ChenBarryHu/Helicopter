@@ -20,10 +20,6 @@ public class  MainActivity extends  Activity {
 
         // make the surface view the layout of this activity
         setContentView(new GamePanel(this));
-
-
-
-
     }
 
     @Override

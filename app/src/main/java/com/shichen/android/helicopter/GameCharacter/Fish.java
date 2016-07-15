@@ -2,6 +2,7 @@ package com.shichen.android.helicopter.GameCharacter;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.util.Log;
 
 import com.shichen.android.helicopter.GamePanel;
@@ -17,7 +18,7 @@ public class Fish extends GameObject {
     public static int score;
 
 
-    private double gravityG = 5;
+    private double gravityG = 6;
     private double liftingAccelerate = -10;
     private double realAcceleration = 0;
     private int width;
@@ -32,9 +33,9 @@ public class Fish extends GameObject {
     private Animation animation;
     private long startTime;
 
-    // player's constructor, pass in bitmap(which is a spritesheet),
-    // and how many different image in that player
-    // pos_x and pos_y represent the position of the player, in this, game, the x position
+    // Fish's constructor, pass in bitmap(which is a spritesheet),
+    // and how many different image in that bitmap
+    // pos_x and pos_y represent the position of the player, in this game, the x position
     // of the fish is fixed
     // the initial y position of the fish is the center of the screen(y axis)
     // heightInSpriteSheet and widthInSpriteSheet determines how much we should cut the bitmap of sprite sheet
@@ -132,4 +133,8 @@ public class Fish extends GameObject {
         score = 0;
     }
 
+    @Override
+    public Rect getRectangle(){
+        return new Rect(pos_x, pos_y+10, pos_x+widthInSpriteSheet, pos_y+44);
+    }
 }

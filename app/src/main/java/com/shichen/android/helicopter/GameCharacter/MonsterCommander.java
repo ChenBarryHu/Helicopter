@@ -87,8 +87,8 @@ public class MonsterCommander {
         }
     }
 
-    public void update() {
 
+    public void update() {
         if (!ifMonsterOccurInThisRound) {
             if (topBats.size() < 9 || botBats.size() < 9) {
                 fish.setIfcurrentlyplaying(false);
