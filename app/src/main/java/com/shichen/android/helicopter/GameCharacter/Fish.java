@@ -202,10 +202,10 @@ public class Fish extends GameObject {
     }
 
     public Rect getBiggerUnstoppableRectangle(){
-        return new Rect(pos_x+96, pos_y + 89, pos_x + 372, pos_y + 317);
+        return new Rect(pos_x+181, pos_y + 110, pos_x + 337, pos_y + 349);
     }
     public Rect getSmallerUnstoppableRectangle(){
-        return new Rect(pos_x+356, pos_y + 188, pos_x + 487, pos_y + 377);
+        return new Rect(pos_x+342, pos_y + 272, pos_x + 504, pos_y + 340);
     }
 
     public void enterUnstoppableMode(){

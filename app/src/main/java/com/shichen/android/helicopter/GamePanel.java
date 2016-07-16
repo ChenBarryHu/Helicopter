@@ -157,7 +157,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             if(!fishNeedDisappear) {
                 fish.draw(canvas);
             }
-            puffCommander.draw(canvas);
+            if(!unstoppableMode) {
+                puffCommander.draw(canvas);
+            }
             monsterCommander.draw(canvas);
             Log.e("Commander draw called","Commander");
             bonusCommander.draw(canvas);
@@ -249,7 +251,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawText("Inverse Gravity Mode remaining: " +bonusCommander.gravityInverseCount+" s", WIDTH/2-400, 90, colorpaint);
             canvas.drawText("TRIPLE BONUS!!!!! ", WIDTH/2-200, 500, colorpaint);
         }
-        if(gravityInverseMode){
+        if(unstoppableMode){
             colorpaint.setColor(Color.WHITE);
             canvas.drawText("UNSTOPPABLE", WIDTH/2-200, 90, colorpaint);
             canvas.drawText("SIX TIMES BONUS!!!!! ", WIDTH/2-270, 500, colorpaint);
