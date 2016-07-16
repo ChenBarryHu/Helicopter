@@ -3,6 +3,7 @@ package com.shichen.android.helicopter.GameCharacter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.shichen.android.helicopter.GamePanel;
 
@@ -14,6 +15,8 @@ import com.shichen.android.helicopter.GamePanel;
 public class Fish extends GameObject {
 
     private Bitmap spritesheet;       // set of postures which are stored in Bitmap
+    private Bitmap unstoppableSpriteSheet;
+    private int numOfPostures;
     public static int score;
 
 
@@ -23,6 +26,8 @@ public class Fish extends GameObject {
     private double realAcceleration = 0;
     private int width;
     private int height;
+    private int unStoppableWidth;
+    private int unStoppableHeight;
     // determine if we are pressing the screen
     private boolean ifScreenPressed;
 
@@ -31,6 +36,7 @@ public class Fish extends GameObject {
     // create a new animation object
     private boolean firstUpdate;
     private Animation animation;
+    private Animation unstoppableAnimation;
     private long startTime;
     private float timeForScore;
 
@@ -40,11 +46,15 @@ public class Fish extends GameObject {
     // of the fish is fixed
     // the initial y position of the fish is the center of the screen(y axis)
     // heightInSpriteSheet and widthInSpriteSheet determines how much we should cut the bitmap of sprite sheet
-    public Fish(Bitmap setOfPostures, int width, int height, int numOfPostures) {
+    public Fish(Bitmap setOfPostures, Bitmap unstoppableSpriteSheet) {
 
-        this.width = width;
-        this.height = height;
-        animation = new Animation();
+        this.width = 64;
+        this.height = 64;
+        this.numOfPostures = 6;
+        this.unStoppableHeight=512;
+        this.unStoppableWidth=512;
+        this.animation = new Animation();
+        this.unstoppableAnimation = new Animation();
         pos_x = 230;
         pos_y = GamePanel.HEIGHT / 2;
 
@@ -57,16 +67,21 @@ public class Fish extends GameObject {
 
         Bitmap[] postures = new Bitmap[numOfPostures];// numOfPostures means how many different
         // images we are using to show the animation
-        spritesheet = setOfPostures;
+        Bitmap[] unstoppablePostures = new Bitmap[numOfPostures];
+        this.spritesheet = setOfPostures;
+        this.unstoppableSpriteSheet = unstoppableSpriteSheet;
 
         for (int i = 0; i < postures.length; i++) {
             // createBitmap Returns an immutable bitmap from the specified subset of the
             // source bitmap, we cut the sprite sheet to seperate each individual image for animation
             postures[i] = Bitmap.createBitmap(spritesheet, i * width, 0, width, height);
+            unstoppablePostures[i] = Bitmap.createBitmap(unstoppableSpriteSheet, i * unStoppableWidth, 0, unStoppableWidth, unStoppableHeight);
         }
 
         animation.setPostures(postures);         // give the image of animation to animation object
         animation.setRestTimeforFish(10);        // set the delay value of animation object to 10
+        unstoppableAnimation.setPostures(unstoppablePostures);
+        unstoppableAnimation.setRestTimeforFish(10);
     }
 
 
@@ -94,7 +109,11 @@ public class Fish extends GameObject {
 
         startTime = System.nanoTime();    //update the startTime
 
-        animation.update();
+        if(GamePanel.unstoppableMode) {
+            unstoppableAnimation.update();
+        }else{
+            animation.update();
+        }
 
         if (ifScreenPressed) {
             realAcceleration = gravityG + liftingAccelerate;
@@ -108,19 +127,38 @@ public class Fish extends GameObject {
             Velocity_y = (int) (Velocity_y + realAcceleration * elapsed);
         }
 
-        if (pos_y < 0) {
-            pos_y = 0;
-            Velocity_y = 0;
-        }
-        if (pos_y > (GamePanel.HEIGHT - this.heightInSpriteSheet)) {
-            pos_y = GamePanel.HEIGHT - this.heightInSpriteSheet;
-            Velocity_y = 0;
+
+        if(GamePanel.unstoppableMode){
+            if (pos_y > (GamePanel.HEIGHT - 365)) {
+                pos_y = GamePanel.HEIGHT - 365;
+                Velocity_y = 0;
+            }
+            if(pos_y<-89){
+                pos_y = -89;
+                Velocity_y = 0;
+            }
+        }else {
+            if (pos_y < 0) {
+                pos_y = 0;
+                Velocity_y = 0;
+            }
+            if (pos_y > (GamePanel.HEIGHT - this.heightInSpriteSheet)) {
+                pos_y = GamePanel.HEIGHT - this.heightInSpriteSheet;
+                Velocity_y = 0;
+            }
         }
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(animation.getCurrentPosture(), pos_x, pos_y, null);
-        //Log.i("Draw fish", "pos_x is " + pos_x + " pos_y is " + pos_y);
+        Log.e("unstoppableMode", "is " + GamePanel.unstoppableMode);
+        if(GamePanel.unstoppableMode) {
+            Log.e("unstoppableMode", "Draw");
+            canvas.drawBitmap(unstoppableAnimation.getCurrentPosture(), pos_x, pos_y, null);
+            //Log.i("Draw fish", "pos_x is " + pos_x + " pos_y is " + pos_y);
+        }else{
+            Log.e("nomal", "Draw");
+            canvas.drawBitmap(animation.getCurrentPosture(), pos_x, pos_y, null);
+        }
     }
 
     public int getScore() {
@@ -162,8 +200,26 @@ public class Fish extends GameObject {
         setGravityG(-getGravityG());
         setLiftingAccelerate(-getLiftingAccelerate());
     }
+
+    public Rect getBiggerUnstoppableRectangle(){
+        return new Rect(pos_x+96, pos_y + 89, pos_x + 372, pos_y + 317);
+    }
+    public Rect getSmallerUnstoppableRectangle(){
+        return new Rect(pos_x+356, pos_y + 188, pos_x + 487, pos_y + 377);
+    }
+
+    public void enterUnstoppableMode(){
+        this.pos_x = 0;
+        this.pos_y = 200;
+        this.setVelocity_y(0);
+    }
+    public void leaveUnstoppableMode(){
+        this.pos_x = 230;
+        this.pos_y = GamePanel.HEIGHT / 2;
+        this.setVelocity_y(0);
+    }
     @Override
     public Rect getRectangle(){
-        return new Rect(pos_x, pos_y+11, pos_x+widthInSpriteSheet, pos_y+42);
+            return new Rect(pos_x, pos_y + 11, pos_x + widthInSpriteSheet, pos_y + 42);
     }
 }

@@ -87,19 +87,33 @@ public class MonsterCommander {
         elaspedTime = (System.nanoTime() - monsterStartAppearTime) / 1000000;
 
 
-        if (fish.pos_y < 20 || fish.pos_y > 546) {
-            fish.setIfcurrentlyplaying(false);
-        }
-
-        for (int i = 0; i < monsters.size(); i++) {
-            monsters.get(i).update();
-            if (collision(monsters.get(i), fish)) {
-                monsters.remove(i);
+        if(!GamePanel.unstoppableMode) {
+            if (fish.pos_y < 20 || fish.pos_y > 546) {
                 fish.setIfcurrentlyplaying(false);
-                break;
             }
-            if (monsters.get(i).getPos_x() < -180) {
-                monsters.remove(i);
+
+
+            for (int i = 0; i < monsters.size(); i++) {
+                monsters.get(i).update();
+                if (collision(monsters.get(i), fish)) {
+                    monsters.remove(i);
+                    fish.setIfcurrentlyplaying(false);
+                    break;
+                }
+                if (monsters.get(i).getPos_x() < -180) {
+                    monsters.remove(i);
+                }
+            }
+        }else{
+            for (int i = 0; i < monsters.size(); i++) {
+                monsters.get(i).update();
+                if (collisionUnstoppableMode(monsters.get(i), fish)) {
+                    monsters.remove(i);
+                    break;
+                }
+                if (monsters.get(i).getPos_x() < -180) {
+                    monsters.remove(i);
+                }
             }
         }
 
@@ -136,6 +150,13 @@ public class MonsterCommander {
 
     public boolean collision(GameObject a, GameObject b) {
         if (Rect.intersects(a.getRectangle(), b.getRectangle())) {
+            return true;
+        }
+        return false;
+    }
+    public boolean collisionUnstoppableMode(GameObject a, Fish b) {
+        if ((Rect.intersects(a.getRectangle(), b.getBiggerUnstoppableRectangle()))||
+                (Rect.intersects(a.getRectangle(), b.getSmallerUnstoppableRectangle()))) {
             return true;
         }
         return false;

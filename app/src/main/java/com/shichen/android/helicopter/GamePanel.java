@@ -54,6 +54,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private boolean justOpened = true;
     public static boolean add5points = false;
     public static boolean gravityInverseMode = false;
+    public static boolean unstoppableMode = false;
 
 
 
@@ -86,7 +87,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         explosionStart =false;
         explosionFinish = false;
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
-        fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish), 64, 64, 6);
+        fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
         puffCommander = new PuffCommander(fish);
         monsterCommander = new MonsterCommander(getContext(), fish);
         bonusCommander = new BonusCommander(getContext(), fish);
@@ -235,10 +236,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         colorpaint.setTextSize(50);
         colorpaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         if(add5points){
-            canvas.drawText("Great Job, +5!!!!", WIDTH/2-200, 200, colorpaint);
+            if(gravityInverseMode) {
+                canvas.drawText("Great Job, +15!!!!", WIDTH / 2 - 200, 150, colorpaint);
+            }else if(unstoppableMode){
+                canvas.drawText("Great Job, +30!!!!", WIDTH / 2 - 200, 150, colorpaint);
+            }else{
+                canvas.drawText("Great Job, +5!!!!", WIDTH / 2 - 200, 150, colorpaint);
+            }
         }
         if(gravityInverseMode){
+            colorpaint.setColor(Color.WHITE);
             canvas.drawText("Inverse Gravity Mode remaining: " +bonusCommander.gravityInverseCount+" s", WIDTH/2-400, 90, colorpaint);
+            canvas.drawText("TRIPLE BONUS!!!!! ", WIDTH/2-200, 500, colorpaint);
+        }
+        if(gravityInverseMode){
+            colorpaint.setColor(Color.WHITE);
+            canvas.drawText("UNSTOPPABLE", WIDTH/2-200, 90, colorpaint);
+            canvas.drawText("SIX TIMES BONUS!!!!! ", WIDTH/2-270, 500, colorpaint);
         }
         if(!fish.getIfcurrentlyplaying()&&newGameWellPrepared)
         {
@@ -276,6 +290,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
         if(gravityInverseMode){
             bonusCommander.gravityReinverse();
+        }
+        if(unstoppableMode){
+            bonusCommander.leaveUnstoppableMode();
         }
         fish.resetScore();
         fish.setVelocity_y(0);
