@@ -3,7 +3,6 @@ package com.shichen.android.helicopter.GameCharacter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 
 import com.shichen.android.helicopter.GamePanel;
 
@@ -59,7 +58,7 @@ public class Fish extends GameObject {
         pos_y = GamePanel.HEIGHT / 2;
 
         Velocity_y = 0;
-        score = 0;
+        this.score = 0;
         timeForScore = 0;
 
         firstUpdate = true;     // used to calculate elapsed time keep reading the
@@ -101,6 +100,8 @@ public class Fish extends GameObject {
         if(timeForScore>= 10) {
             if(GamePanel.gravityInverseMode){
                 score+=3;
+            }else if(GamePanel.unstoppableMode){
+                score+=6;
             }else{
                 score++;
             }
@@ -150,13 +151,10 @@ public class Fish extends GameObject {
     }
 
     public void draw(Canvas canvas) {
-        Log.e("unstoppableMode", "is " + GamePanel.unstoppableMode);
         if(GamePanel.unstoppableMode) {
-            Log.e("unstoppableMode", "Draw");
             canvas.drawBitmap(unstoppableAnimation.getCurrentPosture(), pos_x, pos_y, null);
             //Log.i("Draw fish", "pos_x is " + pos_x + " pos_y is " + pos_y);
         }else{
-            Log.e("nomal", "Draw");
             canvas.drawBitmap(animation.getCurrentPosture(), pos_x, pos_y, null);
         }
     }
@@ -180,25 +178,12 @@ public class Fish extends GameObject {
         score = 0;
     }
 
-    public double getGravityG() {
-        return gravityG;
-    }
-
-    public double getLiftingAccelerate() {
-        return liftingAccelerate;
-    }
-
-    public void setGravityG(double gravityG) {
-        this.gravityG = gravityG;
-    }
-
-    public void setLiftingAccelerate(double liftingAccelerate) {
-        this.liftingAccelerate = liftingAccelerate;
-    }
 
     public void gravityInverse(){
-        setGravityG(-getGravityG());
-        setLiftingAccelerate(-getLiftingAccelerate());
+        gravityG = -gravityG;
+        //setGravityG(-getGravityG());
+        liftingAccelerate = -liftingAccelerate;
+        //setLiftingAccelerate(-getLiftingAccelerate());
     }
 
     public Rect getBiggerUnstoppableRectangle(){

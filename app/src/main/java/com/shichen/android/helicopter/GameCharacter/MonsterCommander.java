@@ -30,7 +30,6 @@ public class MonsterCommander {
     public long monsterStartAppearTime;
 
 
-    public int score;
     private long elaspedTime;
     private Fish fish;
     private boolean ifMonsterOccurInThisRound = false;
@@ -51,7 +50,6 @@ public class MonsterCommander {
         this.fish = fish;
         this.monsters = new ArrayList<Bird>();
         this.random = new Random();
-        this.score = Fish.score;
         this.context = context;
         this.resForBigYellow[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bigyellowup);
         this.resForBigYellow[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bigyellowdown);

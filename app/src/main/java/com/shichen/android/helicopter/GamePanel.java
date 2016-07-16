@@ -52,7 +52,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public  static boolean explosionStart =false;
     public  static boolean explosionFinish = false;
     private boolean justOpened = true;
-    public static boolean add5points = false;
+    public static boolean addpoints = false;
     public static boolean gravityInverseMode = false;
     public static boolean unstoppableMode = false;
 
@@ -237,7 +237,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         colorpaint.setColor(getResources().getColor(R.color.add5scorescolor));
         colorpaint.setTextSize(50);
         colorpaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        if(add5points){
+        if(addpoints){
             if(gravityInverseMode) {
                 canvas.drawText("Great Job, +15!!!!", WIDTH / 2 - 200, 150, colorpaint);
             }else if(unstoppableMode){
@@ -256,7 +256,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawText("UNSTOPPABLE", WIDTH/2-200, 90, colorpaint);
             canvas.drawText("SIX TIMES BONUS!!!!! ", WIDTH/2-270, 500, colorpaint);
         }
-        if(!fish.getIfcurrentlyplaying()&&newGameWellPrepared)
+        if(!fish.getIfcurrentlyplaying() && newGameWellPrepared)
         {
             Paint paint1 = new Paint();
             paint1.setTextSize(40);
@@ -276,6 +276,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         monsterCommander.monsters.clear();
         bonusCommander.goldens.clear();
         bonusCommander.silvens.clear();
+        bonusCommander.powerdrinks.clear();
         puffCommander.puff.clear();
 
 
@@ -301,7 +302,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         fish.setPos_y(HEIGHT/2);
         fishNeedDisappear = false;
         newGameWellPrepared = true;
-        add5points = false;
+        addpoints = false;
         if(justOpened) {
             justOpened = false;
         }

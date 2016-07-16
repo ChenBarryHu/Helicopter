@@ -14,12 +14,13 @@ public class Powerdrink extends Bonus{
     private int w;
     private int A;
     private Random random;
-
     private int acceleration_y;
     Bitmap drinkImage;
+
+
     public Powerdrink(Bitmap drinkImage){
         this.random = new Random();
-        this.Velocity_x = -7;
+        this.Velocity_x = -6 -(int)(random.nextFloat()*5);
         this.pos_y = 320;
         this.pos_x = 1300 +(int)(random.nextFloat()*10);
         this.w = 1;
@@ -31,6 +32,7 @@ public class Powerdrink extends Bonus{
         this.drinkImage = drinkImage;
     }
 
+
     @Override
     public  void update(long elaspedTime){
         this.pos_x += (int)((elaspedTime/10.0) * this.Velocity_x);
@@ -39,12 +41,10 @@ public class Powerdrink extends Bonus{
         Log.e("POs_y is"," "+ this.pos_y);
         this.acceleration_y = -w*w*(this.pos_y - 320)/150;
         this.Velocity_y += this.acceleration_y * elaspedTime;
-        //this.pos_x += -5;
     }
 
     @Override
     public void draw(Canvas canvas){
-        Log.e("Golden draw called","!!!!!!!!!!!");
         canvas.drawBitmap(drinkImage, pos_x, pos_y, null);
     }
 

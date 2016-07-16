@@ -87,7 +87,7 @@ public class BonusCommander {
 
 
     public void update() {
-        if((Fish.score - scoreWhenEatCorn)> 1) GamePanel.add5points =false;
+        if((Fish.score - scoreWhenEatCorn)> 1) GamePanel.addpoints =false;
         if(GamePanel.gravityInverseMode){
             if((System.nanoTime() - startInverseTime)>1000000000){
                 gravityInverseCount--;
@@ -126,7 +126,7 @@ public class BonusCommander {
                 if (collisionUnstoppableMode(goldens.get(i), fish)) {
                     Log.e("collision appears", "!!!!!!!");
                     Fish.score += 30;
-                    GamePanel.add5points = true;
+                    GamePanel.addpoints = true;
                     this.scoreWhenEatCorn = Fish.score;
                     goldens.remove(i);
                     break;
@@ -135,30 +135,30 @@ public class BonusCommander {
                     goldens.remove(i);
                 }
             }
-            for (int i = 0; i < silvens.size(); i++) {
-                silvens.get(i).update(eachUpdateLoopTime);
-                if (collisionUnstoppableMode(silvens.get(i), fish)) {
-                    Log.e("collision appears", "!!!!!!!");
-                    gravityInverse();
-                    silvens.remove(i);
-                    break;
-                }
-                if (silvens.get(i).getPos_x() < -70) {
-                    silvens.remove(i);
-                }
-            }
-            for (int i = 0; i < powerdrinks.size(); i++) {
-                powerdrinks.get(i).update(eachUpdateLoopTime);
-                if (collisionUnstoppableMode(powerdrinks.get(i), fish)) {
-                    Log.e("collision appears", "!!!!!!!");
-                    enterUnstoppableMode();
-                    powerdrinks.remove(i);
-                    break;
-                }
-                if (powerdrinks.get(i).getPos_x() < -70) {
-                    powerdrinks.remove(i);
-                }
-            }
+//            for (int i = 0; i < silvens.size(); i++) {
+//                silvens.get(i).update(eachUpdateLoopTime);
+//                if (collisionUnstoppableMode(silvens.get(i), fish)) {
+//                    Log.e("collision appears", "!!!!!!!");
+//                    gravityInverse();
+//                    silvens.remove(i);
+//                    break;
+//                }
+//                if (silvens.get(i).getPos_x() < -70) {
+//                    silvens.remove(i);
+//                }
+//            }
+//            for (int i = 0; i < powerdrinks.size(); i++) {
+//                powerdrinks.get(i).update(eachUpdateLoopTime);
+//                if (collisionUnstoppableMode(powerdrinks.get(i), fish)) {
+//                    Log.e("collision appears", "!!!!!!!");
+//                    enterUnstoppableMode();
+//                    powerdrinks.remove(i);
+//                    break;
+//                }
+//                if (powerdrinks.get(i).getPos_x() < -70) {
+//                    powerdrinks.remove(i);
+//                }
+//            }
         }else{
             for (int i = 0; i < goldens.size(); i++) {
                 goldens.get(i).update(eachUpdateLoopTime);
@@ -169,7 +169,7 @@ public class BonusCommander {
                     } else {
                         Fish.score += 5;
                     }
-                    GamePanel.add5points = true;
+                    GamePanel.addpoints = true;
                     this.scoreWhenEatCorn = Fish.score;
                     goldens.remove(i);
                     break;
@@ -215,7 +215,6 @@ public class BonusCommander {
             if (bonusSelector == 0) {
                 goldens.add(new Golden(arrayOfResForGolden));
             } else if(bonusSelector == 1){
-                //silvens.add(new InverseGravity(arrayOfResForSilven));
                 silvens.add(new InverseGravity(arrayOfResForSilven));
             }else{
                 powerdrinks.add(new Powerdrink(resForPowerDrink));
