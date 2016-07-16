@@ -52,6 +52,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public  static boolean explosionStart =false;
     public  static boolean explosionFinish = false;
     private boolean justOpened = true;
+    public static boolean add5points = false;
+    public static boolean gravityInverseMode = false;
 
 
 
@@ -149,14 +151,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if (canvas != null) {
             final int savedState = canvas.save();      // I don't know what does it means
             canvas.scale(scaleFactorX, scaleFactorY);  // scale the  canvas
+            //Log.e("draw"," background drawn!!!!!!!!!!!!!!!!!!!!!!!!");
             bg.draw(canvas);                           // draw the background and fish!!!!
             if(!fishNeedDisappear) {
                 fish.draw(canvas);
             }
             puffCommander.draw(canvas);
             monsterCommander.draw(canvas);
+            Log.e("Commander draw called","Commander");
             bonusCommander.draw(canvas);
-            Log.e("explosion", "explosionStart "+explosionStart+"explosionFinish"+explosionFinish);
             if(explosionStart&& (!explosionFinish))
             {
                 explosion.draw(canvas);
@@ -177,6 +180,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             fish.update();
             puffCommander.update();
             monsterCommander.update();
+            Log.e("Commander update called","Commander");
             bonusCommander.update();
 
 
@@ -226,6 +230,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("Score: " + fish.getScore(), 10, HEIGHT - 60, paint);
         canvas.drawText("BEST: " + bestScore, WIDTH - 215, HEIGHT - 60, paint);
 
+        Paint colorpaint = new Paint();
+        colorpaint.setColor(getResources().getColor(R.color.add5scorescolor));
+        colorpaint.setTextSize(50);
+        colorpaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        if(add5points){
+            canvas.drawText("Great Job, +5!!!!", WIDTH/2-200, 200, colorpaint);
+        }
+        if(gravityInverseMode){
+            canvas.drawText("Inverse Gravity Mode remaining: " +bonusCommander.gravityInverseCount+" s", WIDTH/2-400, 90, colorpaint);
+        }
         if(!fish.getIfcurrentlyplaying()&&newGameWellPrepared)
         {
             Paint paint1 = new Paint();
@@ -244,7 +258,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     {
         // clear the puff, monster and bat from last round
         monsterCommander.monsters.clear();
-        bonusCommander.bonuses.clear();
+        bonusCommander.goldens.clear();
+        bonusCommander.silvens.clear();
         puffCommander.puff.clear();
 
 
@@ -259,11 +274,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 bestScore = fish.getScore();
             }
         }
+        if(gravityInverseMode){
+            bonusCommander.gravityReinverse();
+        }
         fish.resetScore();
         fish.setVelocity_y(0);
         fish.setPos_y(HEIGHT/2);
         fishNeedDisappear = false;
         newGameWellPrepared = true;
+        add5points = false;
         if(justOpened) {
             justOpened = false;
         }

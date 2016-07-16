@@ -84,7 +84,11 @@ public class Fish extends GameObject {
         timeForScore += elapsed;
 
         if(timeForScore>= 10) {
-            score++;
+            if(GamePanel.gravityInverseMode){
+                score+=3;
+            }else{
+                score++;
+            }
             timeForScore-=10;
         }
 
@@ -138,6 +142,26 @@ public class Fish extends GameObject {
         score = 0;
     }
 
+    public double getGravityG() {
+        return gravityG;
+    }
+
+    public double getLiftingAccelerate() {
+        return liftingAccelerate;
+    }
+
+    public void setGravityG(double gravityG) {
+        this.gravityG = gravityG;
+    }
+
+    public void setLiftingAccelerate(double liftingAccelerate) {
+        this.liftingAccelerate = liftingAccelerate;
+    }
+
+    public void gravityInverse(){
+        setGravityG(-getGravityG());
+        setLiftingAccelerate(-getLiftingAccelerate());
+    }
     @Override
     public Rect getRectangle(){
         return new Rect(pos_x, pos_y+11, pos_x+widthInSpriteSheet, pos_y+42);

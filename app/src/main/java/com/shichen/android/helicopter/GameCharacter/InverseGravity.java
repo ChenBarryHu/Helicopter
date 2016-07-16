@@ -3,13 +3,13 @@ package com.shichen.android.helicopter.GameCharacter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
+
 import java.util.Random;
 
 /**
  * Created by hsctn on 2016-07-15.
  */
-public class Golden extends Bonus{
+public class InverseGravity extends Bonus {
     private int w;
     private int A;
     private Random random;
@@ -17,7 +17,7 @@ public class Golden extends Bonus{
     private int acceleration_y;
     private Animation animation;
     Bitmap[] postures;
-    public Golden(Bitmap[] postures){
+    public InverseGravity(Bitmap[] postures){
         this.random = new Random();
         this.Velocity_x = -7;
         this.pos_y = 320;
@@ -40,8 +40,8 @@ public class Golden extends Bonus{
     public  void update(long elaspedTime){
         this.pos_x += (int)((elaspedTime/10.0) * this.Velocity_x);
         this.pos_y += (int)((elaspedTime/10.0) * ((float)(this.Velocity_y)/100));
-        Log.e("POs_y is"," "+ this.pos_y);
-        Log.e("POs_y is"," "+ this.pos_y);
+//        Log.e("POs_y is"," "+ this.pos_y);
+//        Log.e("POs_y is"," "+ this.pos_y);
         this.acceleration_y = -w*w*(this.pos_y - 320)/150;
         this.Velocity_y += this.acceleration_y * elaspedTime;
         //this.pos_x += -5;
@@ -50,7 +50,7 @@ public class Golden extends Bonus{
 
     @Override
     public void draw(Canvas canvas){
-        Log.e("Golden draw called","!!!!!!!!!!!");
+//        Log.e("Golden draw called","!!!!!!!!!!!");
         canvas.drawBitmap(animation.getCurrentPosture(), pos_x, pos_y, null);
     }
 
