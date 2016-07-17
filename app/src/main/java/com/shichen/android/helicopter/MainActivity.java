@@ -1,6 +1,7 @@
 package com.shichen.android.helicopter;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,25 +17,39 @@ import com.shichen.android.helicopter.GameCharacter.Bird;
 
 public class  MainActivity extends  Activity  {
 
+    public static final String PREFS_NAME = "MyPrefsFile";
     public FrameLayout game;
-    GamePanel gamePanel;
+    public GamePanel gamePanel;
+    private SharedPreferences scorePrefs;
+    //static public long bestScore;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        scorePrefs = getSharedPreferences(PREFS_NAME,0);
+        SharedPreferences.Editor ed = scorePrefs.edit();
+        ed.putLong("BESTSCORE", GamePanel.bestScore);
+        ed.commit();
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // turn title off
+        scorePrefs = getSharedPreferences(PREFS_NAME,0);
+        long bestScore = scorePrefs.getLong("BESTSCORE",0);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // set the screen to full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        this.gamePanel = new GamePanel(this);
-        // make the surface view the layout of this activity
-        setContentView(this.gamePanel);
+
 
 
 
         game = new FrameLayout(this);
-        GamePanel gameView = new GamePanel (this);
+        gamePanel = new GamePanel (this);
         LinearLayout gameWidgets = new LinearLayout (this);
 
 
@@ -45,17 +60,11 @@ public class  MainActivity extends  Activity  {
         endGameButton.setText("Stop Game");
 
 
-        game.addView(gameView);
+        game.addView(gamePanel);
         game.addView(gameWidgets);
 
         setContentView(game);
 
-
-
-
-
-
-        //dgdfgdfg
         OnClickListener listener = new OnClickListener() {
 
             @Override
@@ -78,6 +87,7 @@ public class  MainActivity extends  Activity  {
         gameWidgets.addView(endGameButton);
     }
 
+
 //    public void onClick(View v){
 //
 //    }
@@ -91,21 +101,13 @@ public class  MainActivity extends  Activity  {
 //        popup.show();
 //    }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        if(gamePanel.thread.()){
-////            return;
-////        }else{
-////
-////        }
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 //
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        //gamePanel.pauseGame();
-//    }
+
+
 
 
     @Override
@@ -138,12 +140,10 @@ public class  MainActivity extends  Activity  {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
