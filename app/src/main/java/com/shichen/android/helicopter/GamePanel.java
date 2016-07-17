@@ -64,7 +64,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // bestScore record the score of the game, it will also be used to change the easyness of the game
-    private long bestScore = 0;
+    static public long bestScore;
 
 
 
@@ -87,6 +87,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             thread = new GameLoopEngine(getHolder(), this);
             thread.setIfRunning(true);
         }
+        this.bestScore = 0;
 
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
         fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
@@ -337,5 +338,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-
+    public static void setBestScore(long bestScore) {
+        GamePanel.bestScore = bestScore;
+    }
 }
