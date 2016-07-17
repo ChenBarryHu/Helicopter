@@ -49,6 +49,4 @@ public class PuffCommander {
     public void setIfFirstPuffInThisRound(boolean ifFirstPuffInThisRound) {
         this.ifFirstPuffInThisRound = ifFirstPuffInThisRound;
     }
-
-
 }

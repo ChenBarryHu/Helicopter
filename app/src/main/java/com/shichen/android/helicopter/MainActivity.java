@@ -1,23 +1,31 @@
 package com.shichen.android.helicopter;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.shichen.android.helicopter.GameCharacter.Bird;
 
-public class  MainActivity extends  Activity  {
+public class MainActivity extends Activity {
+    FrameLayout game;
+    GamePanel gameView;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
-    public FrameLayout game;
-    GamePanel gamePanel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,19 +33,14 @@ public class  MainActivity extends  Activity  {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // set the screen to full screen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        this.gamePanel = new GamePanel(this);
         // make the surface view the layout of this activity
-        setContentView(this.gamePanel);
-
 
 
         game = new FrameLayout(this);
-        GamePanel gameView = new GamePanel (this);
-        LinearLayout gameWidgets = new LinearLayout (this);
-
-
+        gameView = new GamePanel(this);
+        LinearLayout gameWidgets = new LinearLayout(this);
 
 
         final Button endGameButton = new Button(this);
@@ -51,29 +54,112 @@ public class  MainActivity extends  Activity  {
         setContentView(game);
 
 
-        OnClickListener listener = new OnClickListener() {
+        OnClickListener listener = new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if(GamePanel.resetModeStart) return;
-                if(!gamePanel.thread.ifPauseGame) {
+                if (!gamePanel.thread.ifPauseGame) {
                     gamePanel.pauseGame();
                     endGameButton.setText("resume game");
-               }else{
+                } else {
                     gamePanel.fish.resume();
-                   gamePanel.resumeGame();
-                    //GameLoopEngine.thisTime = System.nanoTime();
+                    gamePanel.resumeGame();
                     gamePanel.bonusCommander.resume();
                     endGameButton.setText("stop game");
-               }
+                }
             }
         };
 
         endGameButton.setOnClickListener(listener);
         gameWidgets.addView(endGameButton);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        gamePanel.pauseGame();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("ggsmd", 1);
+        outState.putParcelable("bird", bird);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        int ggsmd = savedInstanceState.getInt("ggsmd");
+        Bird bird = savedInstanceState.getParcelable("bird");
+        |||||||6d 03 b57...Now we add pause button, but the lifecycle functions are not added, and
+        if we pause and resume the game, the thread just broke
+        setContentView(this.gamePanel);
+
+
+        game = new FrameLayout(this);
+        GamePanel gameView = new GamePanel(this);
+        LinearLayout gameWidgets = new LinearLayout(this);
+
+
+        final Button endGameButton = new Button(this);
+        endGameButton.setWidth(300);
+        endGameButton.setText("Start Game");
+
+
+        game.addView(gameView);
+        game.addView(gameWidgets);
+
+        setContentView(game);
+
+
+        OnClickListener listener = new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (!gamePanel.thread.ifPauseGame) {
+                    gamePanel.pauseGame();
+                    endGameButton.setText("resume game");
+                } else {
+                    gamePanel.fish.resume();
+                    gamePanel.resumeGame();
+                    gamePanel.bonusCommander.resume();
+                    endGameButton.setText("stop game");
+                }
+//                /** Instantiating PopupMenu class */
+//                PopupMenu popup = new PopupMenu(getBaseContext(), v);
+//
+//                /** Adding menu items to the popumenu */
+//                popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
+//
+//                /** Defining menu item click listener for the popup menu */
+//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        Toast.makeText(getBaseContext(), "You selected the action : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    }
+//                });
+//
+//                /** Showing the popup menu */
+//                popup.show();
+            }
+        };
+
+        endGameButton.setOnClickListener(listener);
+        gameWidgets.addView(endGameButton);
 
 
     }
@@ -94,17 +180,12 @@ public class  MainActivity extends  Activity  {
     @Override
     public void onResume() {
         super.onResume();
-//        if(gamePanel.thread.()){
-//            return;
-//        }else{
-//
-//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        //gamePanel.pauseGame();
+        gamePanel.pauseGame();
     }
 
     @Override
@@ -112,7 +193,7 @@ public class  MainActivity extends  Activity  {
         super.onSaveInstanceState(outState);
 
         outState.putInt("ggsmd", 1);
-        //outState.putParcelable("bird", bird);
+        outState.putParcelable("bird", bird);
     }
 
     @Override
@@ -121,8 +202,11 @@ public class  MainActivity extends  Activity  {
 
         int ggsmd = savedInstanceState.getInt("ggsmd");
         Bird bird = savedInstanceState.getParcelable("bird");
+        =======
+        setContentView(new GamePanel(this));
+        >>>>>>>parent of 6d 03 b57...Now we add pause button, but the lifecycle functions are
+        not added, and if we pause and resume the game, the thread just broke
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,5 +228,45 @@ public class  MainActivity extends  Activity  {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.shichen.android.helicopter/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.shichen.android.helicopter/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

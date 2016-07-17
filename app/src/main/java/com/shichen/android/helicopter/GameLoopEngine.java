@@ -9,24 +9,23 @@ import android.view.SurfaceHolder;
  */
 
 
-public class GameLoopEngine implements Runnable {
+public class GameLoopEngine extends Thread {
     private int FPS = 40;                      // how many frame we want per second
     private double framecap = 1.0 / FPS;       // this is the time of each frame of this game
 
     private SurfaceHolder surfaceHolder;       // surfaceholder and gamePanel object
-    final private GamePanel gamePanel;               //    use surfaceholder to get canvas, use gamePanel to
+    private GamePanel gamePanel;               //    use surfaceholder to get canvas, use gamePanel to
                                                //    control game
 
     private boolean ifRunning;       //used to control the  status of the game by setting the value of it true or false
-    public static boolean ifPauseGame;
+
     public static Canvas canvas;   // we use Canvas to draw something
-
-    static public double thisTime;
-    public double lastTime;
-
+    public static boolean ifPauseGame;
 
     public GameLoopEngine(SurfaceHolder surfaceHolder, GamePanel gamePanel) { // constructor: we need a
                                                      // surfaceHolder and gamePanel to construct this object
+
+
         super();
         this.surfaceHolder = surfaceHolder;
         this.gamePanel = gamePanel;
@@ -35,12 +34,10 @@ public class GameLoopEngine implements Runnable {
 
     @Override
     public void run() {              // because Mainthread extends thread, so should override run() method
-
-        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         ifRunning = true;
 
-        thisTime = System.nanoTime() / 1000000000.0f;  // this is for first loop
-                                             // thisTime and lastTime are uesd to calculate passedTime
+        double thisTime = System.nanoTime() / 1000000000.0f;  // this is for first loop
+        double lastTime;                                      // thisTime and lastTime are uesd to calculate passedTime
         double passedTime;                                    // this is the running time for each game Engine loop
         double unprocessedTime = 0;                           // this is used to determine when to update
 
@@ -59,10 +56,10 @@ public class GameLoopEngine implements Runnable {
             unprocessedTime += passedTime;
             fpsTimeCumulator += passedTime;
             whileloopcount++;
-            Log.e("gameEngine","pointD");
+
             //Log.i("Fish :", "the score of fish is "+ Fish.score);
+
             if(ifPauseGame) {
-                Log.e("gameEngine","pointC");
                 if(unprocessedTime > framecap){
                     unprocessedTime -= framecap;
                     fpsCountCumulator++;
@@ -73,14 +70,15 @@ public class GameLoopEngine implements Runnable {
                     }
                 }
                 try {
-                    Thread.sleep(5);
+                    sleep(15);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 continue;
             }
 
-            if(unprocessedTime > framecap) {       // when unprocessedTime > framecap, we need to refresh
+
+            if (unprocessedTime > framecap) {       // when unprocessedTime > framecap, we need to refresh
                 unprocessedTime -= framecap;        // we subtract the framecap for next refesh
                 fpsCountCumulator++;                // every time we refresh, we add 1 to fpsCountCumulator
                                                     //               which is a variable used for debugging
@@ -95,15 +93,13 @@ public class GameLoopEngine implements Runnable {
                                                     //      GamePanel, that means we draw something in the surfaceView
                                                     //      (which is GamePanel)
                 canvas = null;
-                Log.e("gameEngine","pointA");
                 try {
                     canvas = this.surfaceHolder.lockCanvas();
-                    //synchronized (surfaceHolder) {
+                    synchronized (surfaceHolder) {
 
-                        Log.e("gameEngine","pointB");
                         this.gamePanel.update();           // we call the methods in gamePanel
                         this.gamePanel.draw(canvas);
-                    //}
+                    }
                 } catch (Exception e) {
                 } finally {
                     if (canvas != null) {
@@ -125,16 +121,7 @@ public class GameLoopEngine implements Runnable {
         }
     }
 
-
     public void setIfRunning(boolean ifrunning) {   // this is used to set the status of the game to running or stopped
         this.ifRunning = ifrunning;
-    }
-
-    public void setIfPauseGame(boolean ifPauseGame) {
-        this.ifPauseGame = ifPauseGame;
-    }
-
-    public boolean isIfPauseGame() {
-        return ifPauseGame;
     }
 }

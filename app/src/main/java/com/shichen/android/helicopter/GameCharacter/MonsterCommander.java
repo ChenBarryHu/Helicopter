@@ -9,8 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.shichen.android.helicopter.GamePanel;
 import com.shichen.android.helicopter.R;
@@ -22,7 +20,7 @@ import java.util.Random;
 /**
  * Created by hsctn on 2016-06-25.
  */
-public class MonsterCommander implements Parcelable {
+public class MonsterCommander {
 
     // these are the monsters
     public ArrayList<Bird> monsters;
@@ -166,13 +164,5 @@ public class MonsterCommander implements Parcelable {
         this.ifMonsterOccurInThisRound = ifMonsterOccurInThisRound;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        //dest.writeParcelableArray(monsters);
-    }
 }

@@ -17,10 +17,6 @@ import com.shichen.android.helicopter.GameCharacter.Fish;
 import com.shichen.android.helicopter.GameCharacter.MonsterCommander;
 import com.shichen.android.helicopter.GameCharacter.PuffCommander;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 /**
  * Created by hsctn on 2016-06-23.
  */
@@ -38,21 +34,29 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // these are the objects we are gonna manipulate to run the game
+//<<<<<<< HEAD
+
     public GameLoopEngine thread;          // we will need a thread to run our engine
+
+
+//||||||| 93fa9fd... Oh, the code is totally mess now
+//    public GameLoopEngine thread;          // we will need a thread to run our engine
+//=======
+//    final public GameLoopEngine thread;          // we will need a thread to run our engine
+//>>>>>>> parent of 93fa9fd... Oh, the code is totally mess now
     private Background bg;                  // this is a background object,provide bitmap, position, update method and draw  method for app background
-    final public Fish fish;                      // we will create our player character which is a cute little fish!!!
+    private Fish fish;                      // we will create our player character which is a cute little fish!!!
     private PuffCommander puffCommander;
     private MonsterCommander monsterCommander;
-    final public BonusCommander bonusCommander;
+    private BonusCommander bonusCommander;
     private Explosion explosion;
-    ExecutorService threadPoolExecutor;
-    Future longRunningTaskFuture;
+
 
 
 
     // these are the sentinals we use to control the flow of the game
     private boolean newGameWellPrepared = true;
-    static public boolean resetModeStart = false;
+    private boolean resetModeStart = false;
     private boolean fishNeedDisappear = false;
     public  static boolean explosionStart =false;
     public  static boolean explosionFinish = false;
@@ -60,7 +64,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public static boolean addpoints = false;
     public static boolean gravityInverseMode = false;
     public static boolean unstoppableMode = false;
-    public boolean ifPauseGame=false;
 
 
 
@@ -80,42 +83,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public GamePanel(Context context) {
         super(context);
-
-
-
-
-
-        threadPoolExecutor = Executors.newSingleThreadExecutor();
-        thread = new GameLoopEngine(getHolder(), this);
-
-
-        longRunningTaskFuture = threadPoolExecutor.submit(thread);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         getHolder().addCallback(this);      // add the callback to the surfaceholder
                                             // the code above means that the surfaceview hold its holder and
                                             // we need the callbacks(surfaceChanged, surfaceCreated, surfaceDestroyed)
         setFocusable(true);      // make gamePanel focusable so it can handle events
-        thread = new GameLoopEngine(getHolder(), this);
-        thread.setIfRunning(true);
-
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
-        fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
-        bonusCommander = new BonusCommander(getContext(), fish);
-
     }
 
 
@@ -124,12 +95,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         explosionStart =false;
         explosionFinish = false;
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
+        fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
         puffCommander = new PuffCommander(fish);
         monsterCommander = new MonsterCommander(getContext(), fish);
+        bonusCommander = new BonusCommander(getContext(), fish);
         explosion = new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion));
+
+        thread = new GameLoopEngine(getHolder(), this);
+        thread.setIfRunning(true);
         thread.run();
 
+
+
+        if(thread.getState() == Thread.State.NEW) {
+            thread.start();
+        }
     }
+
 
     // This is called immediately after any structural
     // changes (format or size) have been made to the surface.
@@ -146,8 +129,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             counter++;
             try {
                 thread.setIfRunning(false);
-                longRunningTaskFuture.cancel(true);; // wait until that thread finish
-//                thread.destroy();   //  set it to null, so that the garbage collector can collect it
+
+
+//=======
+//                thread.join(); // wait until that thread finish
+//>>>>>>> parent of 93fa9fd... Oh, the code is totally mess now
+////                thread.destroy();   //  set it to null, so that the garbage collector can collect it
+//||||||| 6d03b57... Now we add pause button, but the lifecycle functions are not added, and if we pause and resume the game, the thread just broke
+//                thread.join(); // wait until that thread finish
+////                thread.destroy();   //  set it to null, so that the garbage collector can collect it
+//=======
+//                thread.join(); // wait until that thread finish
+//                thread = null;   //  set it to null, so that the garbage collector can collect it
+//>>>>>>> parent of 6d03b57... Now we add pause button, but the lifecycle functions are not added, and if we pause and resume the game, the thread just broke
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -339,20 +333,39 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             justOpened = false;
         }
     }
+//<<<<<<< HEAD
 
 
     public void pauseGame(){
         if(resetModeStart){
             return;
         }else{
-            thread.setIfPauseGame(true);
+//            thread.setIfPauseGame(true);
         }
     }
 
     public void resumeGame(){
-        thread.setIfPauseGame(false);
+
+        //thread.setIfPauseGame(false);
     }
+//<<<<<<< HEAD
 
 
+
+//||||||| 6d03b57... Now we add pause button, but the lifecycle functions are not added, and if we pause and resume the game, the thread just broke
+
+
+    //public void pauseGame(){
+//        if(resetModeStart){
+//            return;
+//        }else{
+           // thread.setIfPauseGame(true);
+        }
+
+
+    //public void resumeGame(){
+
+        //thread.setIfPauseGame(false);
+    }
 
 }

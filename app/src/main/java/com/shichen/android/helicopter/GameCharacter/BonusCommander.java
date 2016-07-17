@@ -27,7 +27,7 @@ public class BonusCommander {
 
     // this variable is used to determine when to create monsters
     public long bonusStartAppearTime;
-    static public long drawGraphTime;
+    public long drawGraphTime;
 
 
     private long elaspedTime;
@@ -274,14 +274,11 @@ public class BonusCommander {
         GamePanel.unstoppableMode = true;
         fish.enterUnstoppableMode();
     }
-
     public void leaveUnstoppableMode(){
         GamePanel.unstoppableMode = false;
         this.unstoppableCount = 10;
         fish.leaveUnstoppableMode();
     }
-
-    public void resume(){this.drawGraphTime = System.nanoTime();}
 }
 
 
