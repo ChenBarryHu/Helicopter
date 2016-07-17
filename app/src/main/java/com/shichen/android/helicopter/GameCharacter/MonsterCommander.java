@@ -173,6 +173,6 @@ public class MonsterCommander implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelableArray(monsters);
+        //dest.writeParcelableArray(monsters);
     }
 }

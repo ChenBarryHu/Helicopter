@@ -42,7 +42,7 @@ public class  MainActivity extends  Activity  {
 
         final Button endGameButton = new Button(this);
         endGameButton.setWidth(300);
-        endGameButton.setText("Start Game");
+        endGameButton.setText("Stop Game");
 
 
         game.addView(gameView);
@@ -55,33 +55,17 @@ public class  MainActivity extends  Activity  {
 
             @Override
             public void onClick(View v) {
+                if(GamePanel.resetModeStart) return;
                 if(!gamePanel.thread.ifPauseGame) {
                     gamePanel.pauseGame();
                     endGameButton.setText("resume game");
                }else{
                     gamePanel.fish.resume();
                    gamePanel.resumeGame();
+                    //GameLoopEngine.thisTime = System.nanoTime();
                     gamePanel.bonusCommander.resume();
                     endGameButton.setText("stop game");
                }
-//                /** Instantiating PopupMenu class */
-//                PopupMenu popup = new PopupMenu(getBaseContext(), v);
-//
-//                /** Adding menu items to the popumenu */
-//                popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
-//
-//                /** Defining menu item click listener for the popup menu */
-//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem item) {
-//                        Toast.makeText(getBaseContext(), "You selected the action : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    }
-//                });
-//
-//                /** Showing the popup menu */
-//                popup.show();
             }
         };
 
@@ -110,12 +94,17 @@ public class  MainActivity extends  Activity  {
     @Override
     public void onResume() {
         super.onResume();
+//        if(gamePanel.thread.()){
+//            return;
+//        }else{
+//
+//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        gamePanel.pauseGame();
+        //gamePanel.pauseGame();
     }
 
     @Override
@@ -123,7 +112,7 @@ public class  MainActivity extends  Activity  {
         super.onSaveInstanceState(outState);
 
         outState.putInt("ggsmd", 1);
-        outState.putParcelable("bird", bird);
+        //outState.putParcelable("bird", bird);
     }
 
     @Override
@@ -133,6 +122,7 @@ public class  MainActivity extends  Activity  {
         int ggsmd = savedInstanceState.getInt("ggsmd");
         Bird bird = savedInstanceState.getParcelable("bird");
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

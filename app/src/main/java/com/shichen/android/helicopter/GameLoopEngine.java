@@ -9,7 +9,7 @@ import android.view.SurfaceHolder;
  */
 
 
-public class GameLoopEngine extends Thread {
+public class GameLoopEngine implements Runnable {
     private int FPS = 40;                      // how many frame we want per second
     private double framecap = 1.0 / FPS;       // this is the time of each frame of this game
 
@@ -21,11 +21,12 @@ public class GameLoopEngine extends Thread {
     public static boolean ifPauseGame;
     public static Canvas canvas;   // we use Canvas to draw something
 
+    static public double thisTime;
+    public double lastTime;
+
 
     public GameLoopEngine(SurfaceHolder surfaceHolder, GamePanel gamePanel) { // constructor: we need a
                                                      // surfaceHolder and gamePanel to construct this object
-
-
         super();
         this.surfaceHolder = surfaceHolder;
         this.gamePanel = gamePanel;
@@ -34,10 +35,12 @@ public class GameLoopEngine extends Thread {
 
     @Override
     public void run() {              // because Mainthread extends thread, so should override run() method
+
+        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         ifRunning = true;
 
-        double thisTime = System.nanoTime() / 1000000000.0f;  // this is for first loop
-        double lastTime;                                      // thisTime and lastTime are uesd to calculate passedTime
+        thisTime = System.nanoTime() / 1000000000.0f;  // this is for first loop
+                                             // thisTime and lastTime are uesd to calculate passedTime
         double passedTime;                                    // this is the running time for each game Engine loop
         double unprocessedTime = 0;                           // this is used to determine when to update
 
@@ -56,9 +59,10 @@ public class GameLoopEngine extends Thread {
             unprocessedTime += passedTime;
             fpsTimeCumulator += passedTime;
             whileloopcount++;
-
+            Log.e("gameEngine","pointD");
             //Log.i("Fish :", "the score of fish is "+ Fish.score);
             if(ifPauseGame) {
+                Log.e("gameEngine","pointC");
                 if(unprocessedTime > framecap){
                     unprocessedTime -= framecap;
                     fpsCountCumulator++;
@@ -69,7 +73,7 @@ public class GameLoopEngine extends Thread {
                     }
                 }
                 try {
-                    sleep(50);
+                    Thread.sleep(5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -91,13 +95,15 @@ public class GameLoopEngine extends Thread {
                                                     //      GamePanel, that means we draw something in the surfaceView
                                                     //      (which is GamePanel)
                 canvas = null;
+                Log.e("gameEngine","pointA");
                 try {
                     canvas = this.surfaceHolder.lockCanvas();
-                    synchronized (surfaceHolder) {
+                    //synchronized (surfaceHolder) {
 
+                        Log.e("gameEngine","pointB");
                         this.gamePanel.update();           // we call the methods in gamePanel
                         this.gamePanel.draw(canvas);
-                    }
+                    //}
                 } catch (Exception e) {
                 } finally {
                     if (canvas != null) {
