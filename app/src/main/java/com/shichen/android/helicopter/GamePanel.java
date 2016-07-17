@@ -83,8 +83,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         // the code above means that the surfaceview hold its holder and
         // we need the callbacks(surfaceChanged, surfaceCreated, surfaceDestroyed)
         setFocusable(true);      // make gamePanel focusable so it can handle events
-        thread = new GameLoopEngine(getHolder(), this);
-        thread.setIfRunning(true);
+        if(thread==null){
+            thread = new GameLoopEngine(getHolder(), this);
+            thread.setIfRunning(true);
+        }
 
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
         fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
@@ -101,7 +103,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         puffCommander = new PuffCommander(fish);
         monsterCommander = new MonsterCommander(getContext(), fish);
         explosion = new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion));
-        thread.start();
+        if(thread==null){
+            thread = new GameLoopEngine(getHolder(), this);
+            thread.setIfRunning(true);
+        }
+        if (thread.getState() == Thread.State.NEW)  {
+            thread.start();
+        }
 
     }
 
@@ -120,8 +128,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             counter++;
             try {
                 thread.setIfRunning(false);
-                longRunningTaskFuture.cancel(true);; // wait until that thread finish
-                thread.destroy();   //  set it to null, so that the garbage collector can collect it
+                //longRunningTaskFuture.cancel(true);; // wait until that thread finish
+                thread.join();
+                thread=null;   //  set it to null, so that the garbage collector can collect it
             } catch (Exception e) {
                 e.printStackTrace();
             }
