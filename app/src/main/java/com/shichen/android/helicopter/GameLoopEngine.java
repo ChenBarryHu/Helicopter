@@ -14,11 +14,11 @@ public class GameLoopEngine extends Thread {
     private double framecap = 1.0 / FPS;       // this is the time of each frame of this game
 
     private SurfaceHolder surfaceHolder;       // surfaceholder and gamePanel object
-    private GamePanel gamePanel;               //    use surfaceholder to get canvas, use gamePanel to
+    final private GamePanel gamePanel;               //    use surfaceholder to get canvas, use gamePanel to
                                                //    control game
 
     private boolean ifRunning;       //used to control the  status of the game by setting the value of it true or false
-
+    public static boolean ifPauseGame;
     public static Canvas canvas;   // we use Canvas to draw something
 
 
@@ -58,8 +58,25 @@ public class GameLoopEngine extends Thread {
             whileloopcount++;
 
             //Log.i("Fish :", "the score of fish is "+ Fish.score);
+            if(ifPauseGame) {
+                if(unprocessedTime > framecap){
+                    unprocessedTime -= framecap;
+                    fpsCountCumulator++;
+                    if (fpsTimeCumulator > 1) {            // print out the frequency of the engine
+                        Log.e("Frequency of the Engine"," fps = " + fpsCountCumulator);
+                        fpsCountCumulator = 0;
+                        fpsTimeCumulator -= 1.0f;
+                    }
+                }
+                try {
+                    sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                continue;
+            }
 
-            if (unprocessedTime > framecap) {       // when unprocessedTime > framecap, we need to refresh
+            if(unprocessedTime > framecap) {       // when unprocessedTime > framecap, we need to refresh
                 unprocessedTime -= framecap;        // we subtract the framecap for next refesh
                 fpsCountCumulator++;                // every time we refresh, we add 1 to fpsCountCumulator
                                                     //               which is a variable used for debugging
@@ -102,7 +119,16 @@ public class GameLoopEngine extends Thread {
         }
     }
 
+
     public void setIfRunning(boolean ifrunning) {   // this is used to set the status of the game to running or stopped
         this.ifRunning = ifrunning;
+    }
+
+    public void setIfPauseGame(boolean ifPauseGame) {
+        this.ifPauseGame = ifPauseGame;
+    }
+
+    public boolean isIfPauseGame() {
+        return ifPauseGame;
     }
 }

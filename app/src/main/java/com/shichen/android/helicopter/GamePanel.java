@@ -34,12 +34,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // these are the objects we are gonna manipulate to run the game
-    private GameLoopEngine thread;          // we will need a thread to run our engine
+    final public GameLoopEngine thread;          // we will need a thread to run our engine
     private Background bg;                  // this is a background object,provide bitmap, position, update method and draw  method for app background
-    private Fish fish;                      // we will create our player character which is a cute little fish!!!
+    final public Fish fish;                      // we will create our player character which is a cute little fish!!!
     private PuffCommander puffCommander;
     private MonsterCommander monsterCommander;
-    private BonusCommander bonusCommander;
+    final public BonusCommander bonusCommander;
     private Explosion explosion;
 
 
@@ -55,6 +55,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public static boolean addpoints = false;
     public static boolean gravityInverseMode = false;
     public static boolean unstoppableMode = false;
+    public boolean ifPauseGame=false;
 
 
 
@@ -78,6 +79,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                                             // the code above means that the surfaceview hold its holder and
                                             // we need the callbacks(surfaceChanged, surfaceCreated, surfaceDestroyed)
         setFocusable(true);      // make gamePanel focusable so it can handle events
+        thread = new GameLoopEngine(getHolder(), this);
+        thread.setIfRunning(true);
+
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
+        fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
+        bonusCommander = new BonusCommander(getContext(), fish);
+
     }
 
 
@@ -86,18 +94,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         explosionStart =false;
         explosionFinish = false;
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
-        fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
         puffCommander = new PuffCommander(fish);
         monsterCommander = new MonsterCommander(getContext(), fish);
-        bonusCommander = new BonusCommander(getContext(), fish);
         explosion = new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion));
-        thread = new GameLoopEngine(getHolder(), this);
-        thread.setIfRunning(true);
-        thread.start();
-
+        if(thread.getState() == Thread.State.NEW) {
+            thread.start();
+        }
     }
-
 
     // This is called immediately after any structural
     // changes (format or size) have been made to the surface.
@@ -115,7 +118,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             try {
                 thread.setIfRunning(false);
                 thread.join(); // wait until that thread finish
-                thread = null;   //  set it to null, so that the garbage collector can collect it
+//                thread.destroy();   //  set it to null, so that the garbage collector can collect it
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -306,5 +309,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if(justOpened) {
             justOpened = false;
         }
+    }
+
+
+    public void pauseGame(){
+        if(resetModeStart){
+            return;
+        }else{
+            thread.setIfPauseGame(true);
+        }
+    }
+
+    public void resumeGame(){
+        thread.setIfPauseGame(false);
     }
 }
