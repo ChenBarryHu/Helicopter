@@ -36,7 +36,7 @@ public class Fish extends GameObject {
     private boolean firstUpdate;
     private Animation animation;
     private Animation unstoppableAnimation;
-    private long startTime;
+    static private long startTime;
     private float timeForScore;
 
     // Fish's constructor, pass in bitmap(which is a spritesheet),
@@ -205,6 +205,11 @@ public class Fish extends GameObject {
     }
     @Override
     public Rect getRectangle(){
-            return new Rect(pos_x, pos_y + 11, pos_x + widthInSpriteSheet, pos_y + 42);
+        return new Rect(pos_x, pos_y + 11, pos_x + widthInSpriteSheet, pos_y + 42);
     }
+
+    public void resume(){
+        this.startTime = System.nanoTime();
+    }
+
 }
