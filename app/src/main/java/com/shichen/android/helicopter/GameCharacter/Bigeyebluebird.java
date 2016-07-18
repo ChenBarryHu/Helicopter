@@ -16,12 +16,11 @@ public class Bigeyebluebird extends Bird {
     private Animation animation;
     Bitmap[] postures;
 
-    public Bigeyebluebird(Bitmap[] postures, int pos_x, int pos_y, int widthInSpriteSheet,
-                         int heightInSpriteSheet, int numOfPostures) {
+    public Bigeyebluebird(Bitmap[] postures, int pos_x, int pos_y, int numOfPostures) {
         this.pos_x = pos_x;
         this.pos_y = pos_y;
-        this.widthInSpriteSheet = widthInSpriteSheet;
-        this.heightInSpriteSheet = heightInSpriteSheet;
+        this.widthInSpriteSheet = 146;
+        this.heightInSpriteSheet = 100;
         this.score = Fish.score;
         this.animation = new Animation();
         this.random = new Random();

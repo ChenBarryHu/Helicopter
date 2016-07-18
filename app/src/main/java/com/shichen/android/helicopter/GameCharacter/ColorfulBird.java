@@ -16,13 +16,12 @@ public class ColorfulBird extends Bird{
     Bitmap[] postures;
     Bitmap spriteSheet;
 
-    public ColorfulBird(Bitmap res, int pos_x, int pos_y ,int widthInSpriteSheet,
-                        int heightInSpriteSheet, int numOfPostures)
+    public ColorfulBird(Bitmap res, int pos_x, int pos_y, int numOfPostures)
     {
         this.pos_x = pos_x;
         this.pos_y = pos_y;
-        this.widthInSpriteSheet = widthInSpriteSheet;
-        this.heightInSpriteSheet = heightInSpriteSheet;
+        this.widthInSpriteSheet = 64;
+        this.heightInSpriteSheet = 64;
         this.animation = new Animation();
         this.score = Fish.score;
         this.spriteSheet = res;
@@ -34,8 +33,8 @@ public class ColorfulBird extends Bird{
         int color = selectColor();
         for(int i = 0; i<numOfPostures;i++)
         {
-            postures[i] = Bitmap.createBitmap(spriteSheet, i * widthInSpriteSheet,
-                    heightInSpriteSheet*color, widthInSpriteSheet, heightInSpriteSheet);
+            postures[i] = Bitmap.createBitmap(spriteSheet, i * this.widthInSpriteSheet,
+                    heightInSpriteSheet*color, this.widthInSpriteSheet, heightInSpriteSheet);
         }
 
         animation.setPostures(postures);
@@ -60,10 +59,5 @@ public class ColorfulBird extends Bird{
             canvas.drawBitmap(animation.getCurrentPosture(),pos_x,pos_y,null);
     }
 
-//    @Override
-//    public int getWidth()
-//    {
-//        //offset slightly for more realistic collision detection
-//        return widthInSpriteSheet-10;
-//    }
+
 }

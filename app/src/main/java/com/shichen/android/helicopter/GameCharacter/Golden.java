@@ -40,8 +40,6 @@ public class Golden extends Bonus{
     public  void update(long elaspedTime){
         this.pos_x += (int)((elaspedTime/10.0) * this.Velocity_x);
         this.pos_y += (int)((elaspedTime/10.0) * ((float)(this.Velocity_y)/100));
-        Log.e("POs_y is"," "+ this.pos_y);
-        Log.e("POs_y is"," "+ this.pos_y);
         this.acceleration_y = -w*w*(this.pos_y - 320)/150;
         this.Velocity_y += this.acceleration_y * elaspedTime;
         //this.pos_x += -5;

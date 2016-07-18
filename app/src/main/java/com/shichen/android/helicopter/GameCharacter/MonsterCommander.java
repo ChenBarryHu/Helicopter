@@ -23,7 +23,7 @@ import java.util.Random;
 public class MonsterCommander {
 
     // these are the monsters
-    public ArrayList<Bird> monsters;
+    static public ArrayList<Bird> monsters;
 
 
     // this variable is used to determine when to create monsters
@@ -42,9 +42,12 @@ public class MonsterCommander {
     private final int heightForColorfulBird = 64;
     private final int widthForBigEyeBlue = 146;
     private final int heightForBigEyeBlue = 100;
-    private Bitmap[] resForBigYellow = new Bitmap[2];
+    private int numOfPosForBY = 2;
+    private int numOfPosForCB = 4;
+    private int numOfPosForBEB = 8;
+    private Bitmap[] resForBigYellow = new Bitmap[numOfPosForBY];
     private Bitmap resForColorfulBird;
-    private Bitmap[] resForBigEyeBlue = new Bitmap[8];
+    private Bitmap[] resForBigEyeBlue = new Bitmap[numOfPosForBEB];
 
     public MonsterCommander(Context context, Fish fish) {
         this.fish = fish;
@@ -123,20 +126,17 @@ public class MonsterCommander {
             birdSelector = selectBird();
             if (birdSelector == 0) {
                 monsters.add(new BigyellowBird(resForBigYellow, GamePanel.WIDTH + 10,
-                        (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForBigYellow))
-                        , widthForBigYellow, heightForBigYellow, 2));
+                        (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForBigYellow)), numOfPosForBY));
             } else if (birdSelector == 1) {
                 monsters.add(new ColorfulBird(resForColorfulBird, GamePanel.WIDTH + 10,
-                        (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForColorfulBird)),
-                        widthForColorfulBird, heightForColorfulBird, 4));
+                        (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForColorfulBird))
+                        , numOfPosForCB));
             } else {
                 monsters.add(new Bigeyebluebird(resForBigEyeBlue, GamePanel.WIDTH + 10,
-                        (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForBigEyeBlue))
-                        , widthForBigEyeBlue, heightForBigEyeBlue, 2));
+                        (int) (random.nextDouble() * (GamePanel.HEIGHT - heightForBigEyeBlue)), numOfPosForBEB));
             }
             monsterStartAppearTime = System.nanoTime();
         }
-
     }
 
 

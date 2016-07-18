@@ -97,7 +97,8 @@ public class  MainActivity extends  Activity  {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("ggsmd", 1);
+
+        //outState.putInt("ggsmd", 1);
         //outState.putParcelable("bird", bird);
     }
 

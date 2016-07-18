@@ -16,12 +16,11 @@ public class BigyellowBird extends Bird {
     private Animation animation;
     Bitmap[] postures;
 
-    public BigyellowBird(Bitmap[] postures, int pos_x, int pos_y, int widthInSpriteSheet,
-                         int heightInSpriteSheet, int numOfPostures) {
+    public BigyellowBird(Bitmap[] postures, int pos_x, int pos_y, int numOfPostures) {
         this.pos_x = pos_x;
         this.pos_y = pos_y;
-        this.widthInSpriteSheet = widthInSpriteSheet;
-        this.heightInSpriteSheet = heightInSpriteSheet;
+        this.widthInSpriteSheet = 179;
+        this.heightInSpriteSheet = 158;
         this.score = Fish.score;
         this.animation = new Animation();
         this.random = new Random();
