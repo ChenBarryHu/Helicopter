@@ -128,10 +128,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         while (counter < 1000) {
             counter++;
             try {
-                thread.setIfRunning(false);
-                //longRunningTaskFuture.cancel(true);; // wait until that thread finish
-                thread.join();
-                thread=null;   //  set it to null, so that the garbage collector can collect it
+                if(!(thread==null)) {
+                    thread.setIfRunning(false);
+                    //longRunningTaskFuture.cancel(true);; // wait until that thread finish
+                    thread.join();
+                    thread = null;   //  set it to null, so that the garbage collector can collect it
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -162,6 +164,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas) {
+        Log.e("GamePanel draw called","point F");
         final float scaleFactorX = (float) getWidth() / (WIDTH * 1.f);     // getWidth(), getHeight() gets
         final float scaleFactorY = (float) getHeight() / (HEIGHT * 1.f); // the screenwidth and screenheight
         super.draw(canvas);
@@ -194,6 +197,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     // loop to update the background and fish
     public void update() {
 
+        Log.e("GamePanel update called","point E");
         if (fish.getIfcurrentlyplaying()) {
             bg.update();
             fish.update();
@@ -290,9 +294,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     {
         // clear the puff, monster and bat from last round
         monsterCommander.monsters.clear();
-        bonusCommander.goldens.clear();
-        bonusCommander.silvens.clear();
-        bonusCommander.powerdrinks.clear();
+        bonusCommander.bonuses.clear();
         puffCommander.puff.clear();
 
 

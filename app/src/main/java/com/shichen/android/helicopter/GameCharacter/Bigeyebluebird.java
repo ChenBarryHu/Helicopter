@@ -4,13 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by hsctn on 2016-06-25.
  */
-public class Bigeyebluebird extends Bird {
-    private int speed;
+public class Bigeyebluebird extends Bird implements Serializable {
     private int score;
     private Random random;
     private Animation animation;
@@ -25,18 +25,18 @@ public class Bigeyebluebird extends Bird {
         this.animation = new Animation();
         this.random = new Random();
         this.postures =postures;
-        this.speed = Fish.score/100+7 + (int) (random.nextDouble() * 20);
+        this.Velocity_x = Fish.score/100+7 + (int) (random.nextDouble() * 20);
 
-        if (speed > 60) speed = 60; // bound bird's speed
+        if (Velocity_x > 60) Velocity_x = 60; // bound bird's speed
 
         animation.setPostures(postures);
-        animation.setRestTimeforFish(100 - speed);
+        animation.setRestTimeforFish(100 - Velocity_x);
 
     }
 
     @Override
     public void update() {
-        pos_x -= speed;
+        pos_x -= Velocity_x;
         animation.update();
     }
 

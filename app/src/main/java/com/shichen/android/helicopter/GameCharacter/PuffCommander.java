@@ -14,6 +14,7 @@ public class PuffCommander {
     private long elaspedTime;
     private boolean ifFirstPuffInThisRound = true;
 
+
     public PuffCommander(Fish fish) {
         puff = new ArrayList<WaterPuff>();
         this.fish = fish;

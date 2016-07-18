@@ -3,13 +3,13 @@ package com.shichen.android.helicopter.GameCharacter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by hsctn on 2016-06-25.
  */
-public class ColorfulBird extends Bird{
-    private int speed;
+public class ColorfulBird extends Bird implements Serializable {
     private int score;
     private Random random;
     private Animation animation;
@@ -27,9 +27,9 @@ public class ColorfulBird extends Bird{
         this.spriteSheet = res;
         this.random = new Random();
         this.postures = new Bitmap[numOfPostures];
-        this.speed = Fish.score/100+7 + (int) (random.nextDouble()*20); // We need to change here later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        this.Velocity_x = Fish.score/100+7 + (int) (random.nextDouble()*20); // We need to change here later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        if(speed>80)speed = 80;
+        if(Velocity_x>80)Velocity_x = 80;
         int color = selectColor();
         for(int i = 0; i<numOfPostures;i++)
         {
@@ -38,7 +38,7 @@ public class ColorfulBird extends Bird{
         }
 
         animation.setPostures(postures);
-        animation.setRestTimeforFish(100-speed);
+        animation.setRestTimeforFish(100-Velocity_x);
 
     }
 
@@ -49,7 +49,7 @@ public class ColorfulBird extends Bird{
     @Override
     public void update()
     {
-        pos_x-=speed;
+        pos_x-=Velocity_x;
         animation.update();
     }
 

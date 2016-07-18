@@ -24,6 +24,9 @@ public class MonsterCommander {
 
     // these are the monsters
     static public ArrayList<Bird> monsters;
+    static public int[] backup_bird_pos_x;
+    static public int[] backup_bird_pos_y;
+    static public int[] backup_bird_speed;
 
 
     // this variable is used to determine when to create monsters
@@ -95,6 +98,7 @@ public class MonsterCommander {
 
 
             for (int i = 0; i < monsters.size(); i++) {
+
                 monsters.get(i).update();
                 if (collision(monsters.get(i), fish)) {
                     monsters.remove(i);
@@ -108,13 +112,14 @@ public class MonsterCommander {
         }else{
             for (int i = 0; i < monsters.size(); i++) {
                 monsters.get(i).update();
+                if (monsters.get(i).getPos_x() < -180) {
+                    monsters.remove(i);
+                }
                 if (collisionUnstoppableMode(monsters.get(i), fish)) {
                     monsters.remove(i);
                     break;
                 }
-                if (monsters.get(i).getPos_x() < -180) {
-                    monsters.remove(i);
-                }
+
             }
         }
 
@@ -164,5 +169,19 @@ public class MonsterCommander {
         this.ifMonsterOccurInThisRound = ifMonsterOccurInThisRound;
     }
 
+
+    public static void backup(){
+        int backuparraysize =  monsters.size();
+        backup_bird_pos_x = new int[backuparraysize];
+        backup_bird_pos_y = new int[backuparraysize];
+        backup_bird_speed = new int[backuparraysize];
+        for (int i = 0; i < monsters.size(); i++) {
+
+            backup_bird_pos_y[i]=monsters.get(i).pos_y;
+            backup_bird_pos_x[i]=monsters.get(i).pos_x;
+            backup_bird_speed[i]=monsters.get(i).Velocity_x;
+
+        }
+    }
 
 }
