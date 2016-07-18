@@ -13,16 +13,29 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.shichen.android.helicopter.GameCharacter.Fish;
 import com.shichen.android.helicopter.GameCharacter.MonsterCommander;
 
 public class  MainActivity extends  Activity  {
 
     public FrameLayout game;
     public GamePanel gamePanel;
+    Button endGameButton;
+//    static public int[] backup_bird_pos_x;
+//    static public int[] backup_bird_pos_y;
+//    static public int[] backup_bird_speed;
+//    static public int backup_currentBonusVelocity_y;
+//    static public int backup_bonus_pos_x;
+//    static public int backup_bonus_pos_y;
+//    static public int backup_background_x;
+//    static public int backup_fish_position_y;
+//    static public int backup_fish_speed_y;
 
     @Override
     protected void onPause() {
         super.onPause();
+        gamePanel.pauseGame();
+        endGameButton.setText("resume game");
         SharedPreferences myPrefs = this.getSharedPreferences("mPrefs", MODE_PRIVATE);
 
         SharedPreferences.Editor prefsEditor = myPrefs.edit();
@@ -50,7 +63,7 @@ public class  MainActivity extends  Activity  {
 
 
 
-        final Button endGameButton = new Button(this);
+        endGameButton = new Button(this);
         endGameButton.setWidth(300);
         endGameButton.setText("Stop Game");
 
@@ -98,37 +111,41 @@ public class  MainActivity extends  Activity  {
         super.onSaveInstanceState(outState);
         MonsterCommander.backup();
         //BonusCommander.backup();
-//        outState.putIntArray("bird_pos_x",MonsterCommander.backup_bird_pos_x);
-//        outState.putIntArray("bird_pos_y",MonsterCommander.backup_bird_pos_y);
-//        outState.putIntArray("bird_speed",MonsterCommander.backup_bird_speed);
+        outState.putIntArray("bird_pos_x",MonsterCommander.backup_bird_pos_x);
+        outState.putIntArray("bird_pos_y",MonsterCommander.backup_bird_pos_y);
+        outState.putIntArray("bird_speed",MonsterCommander.backup_bird_speed);
 //        outState.putInt("bonus_velocity_y",BonusCommander.backup_currentBonusVelocity_y);
 //        outState.putInt("bonus_pos_x",BonusCommander.backup_pos_x);
-//        outState.putInt("bonus_pos_y",BonusCommander.back_up_pos_y);
-//        outState.putInt("bg_pos_x",Background.x);
-//        //outState.putInt("fish_pos_x", Fish.backup_position_x);
-//        outState.putInt("fish_pos_y", Fish.backup_position_y);
-//        outState.putInt("fish_velocity_y", Fish.backup_speed_y);
+//        outState.putInt("bonus_pos_y",BonusCommander.backup_pos_y);
+        outState.putInt("bg_pos_x",Background.x);
+        //outState.putInt("fish_pos_x", Fish.backup_position_x);
+        outState.putInt("fish_pos_y", Fish.backup_position_y);
+        outState.putInt("fish_velocity_y", Fish.backup_speed_y);
 
 
         //outState.putInt("ggsmd", 1);
         //outState.putParcelable("bird", bird);
     }
 
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//
-//    //may have bug
-//        ArrayList<Bird> monsters = (ArrayList<Bird>) savedInstanceState.getSerializable("birds");
-//        ArrayList<Golden> goldens = (ArrayList<Golden>) savedInstanceState.getSerializable("birds");
-//        ArrayList<InverseGravity> silvens = (ArrayList<InverseGravity>) savedInstanceState.getSerializable("birds");
-//        ArrayList<Powerdrink> powerdrinks = (ArrayList<Powerdrink>) savedInstanceState.getSerializable("birds");
-//        int fish_pos_y = savedInstanceState.getInt("fish_pos_y");
-//        int fish_velocity_y = savedInstanceState.getInt("fish_velocity_y");
-//        int bg_pos_x = savedInstanceState.getInt("bg_pos_x");
-////        int ggsmd = savedInstanceState.getInt("ggsmd");
-////        Bird bird = savedInstanceState.getParcelable("bird");
-//    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+//        backup_bird_pos_x= savedInstanceState.getIntArray("bird_pos_x");
+//        backup_bird_pos_y=savedInstanceState.getIntArray("bird_pos_y");
+//        backup_bird_speed=savedInstanceState.getIntArray("bird_speed");
+//        backup_currentBonusVelocity_y=savedInstanceState.getInt("bonus_velocity_y");
+//        backup_bonus_pos_x=savedInstanceState.getInt("bonus_pos_x");
+//        backup_bonus_pos_y=savedInstanceState.getInt("bonus_pos_y");
+//        backup_background_x=savedInstanceState.getInt("bg_pos_x");
+//        backup_fish_position_y=savedInstanceState.getInt("fish_pos_y");
+//        backup_fish_speed_y=savedInstanceState.getInt("fish_velocity_y");
+//        Toast.makeText(this, "this is my Toast message!!! =)",
+//                Toast.LENGTH_LONG).show();
+//        this.gamePanel.fish.pos_y = backup_fish_position_y;
+//        this.gamePanel.fish.backup_speed_y = backup_fish_position_y;
+//        this.gamePanel.fish.restoreVelocity();
+//        this.gamePanel.fish.resume();
+    }
 
 
     @Override
