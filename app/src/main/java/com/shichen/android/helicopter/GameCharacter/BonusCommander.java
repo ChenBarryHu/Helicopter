@@ -76,12 +76,12 @@ public class BonusCommander {
     private int selectBonus() {
         if(GamePanel.gravityInverseMode || GamePanel.unstoppableMode){ return 0;}
         double intermedia = random.nextDouble() * 100;
-        if (intermedia <= 80) {
-            return 0;
+        if (intermedia <= 50) {
+            return 2;
         } else if(intermedia <= 90){
             return 1;
         } else {
-            return 2;
+            return 0;
         }
     }
 

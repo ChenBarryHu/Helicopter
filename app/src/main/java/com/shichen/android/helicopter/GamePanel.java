@@ -77,7 +77,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     //*********************************************************************************//
 
 
-    public GamePanel(Context context) {
+    public GamePanel(Context context, int bestscore) {
         super(context);
         getHolder().addCallback(this);      // add the callback to the surfaceholder
         // the code above means that the surfaceview hold its holder and
@@ -87,7 +87,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             thread = new GameLoopEngine(getHolder(), this);
             thread.setIfRunning(true);
         }
-        this.bestScore = 0;
+        this.bestScore = (long)(bestscore);
 
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
         fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
