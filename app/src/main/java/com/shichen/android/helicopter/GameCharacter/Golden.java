@@ -4,12 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
+
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by hsctn on 2016-07-15.
  */
-public class Golden extends Bonus{
+public class Golden extends Bonus implements Serializable {
     private int w;
     private int A;
     private Random random;
@@ -31,6 +33,7 @@ public class Golden extends Bonus{
         this.animation = new Animation();
         this.postures = new Bitmap[7];
         this.postures = postures;
+        this.bonusindex = 0;
 
         animation.setPostures(postures);
         animation.setRestTimeforFish(30);

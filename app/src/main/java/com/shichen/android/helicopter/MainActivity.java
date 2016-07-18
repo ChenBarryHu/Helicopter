@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.shichen.android.helicopter.GameCharacter.Bird;
+import com.shichen.android.helicopter.GameCharacter.BonusCommander;
+import com.shichen.android.helicopter.GameCharacter.Fish;
+import com.shichen.android.helicopter.GameCharacter.MonsterCommander;
 
 public class  MainActivity extends  Activity  {
 
@@ -96,19 +98,39 @@ public class  MainActivity extends  Activity  {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        MonsterCommander.backup();
+        BonusCommander.backup();
+        outState.putIntArray("bird_pos_x",MonsterCommander.backup_bird_pos_x);
+        outState.putIntArray("bird_pos_y",MonsterCommander.backup_bird_pos_y);
+        outState.putIntArray("bird_speed",MonsterCommander.backup_bird_speed);
+        outState.putInt("bonus_velocity_y",BonusCommander.backup_currentBonusVelocity_y);
+        outState.putInt("bonus_pos_x",BonusCommander.backup_pos_x);
+        outState.putInt("bonus_pos_y",BonusCommander.back_up_pos_y);
+        outState.putInt("bg_pos_x",Background.x);
+        //outState.putInt("fish_pos_x", Fish.backup_position_x);
+        outState.putInt("fish_pos_y", Fish.backup_position_y);
+        outState.putInt("fish_velocity_y", Fish.backup_speed_y);
 
 
         //outState.putInt("ggsmd", 1);
         //outState.putParcelable("bird", bird);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        int ggsmd = savedInstanceState.getInt("ggsmd");
-        Bird bird = savedInstanceState.getParcelable("bird");
-    }
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//
+//    //may have bug
+//        ArrayList<Bird> monsters = (ArrayList<Bird>) savedInstanceState.getSerializable("birds");
+//        ArrayList<Golden> goldens = (ArrayList<Golden>) savedInstanceState.getSerializable("birds");
+//        ArrayList<InverseGravity> silvens = (ArrayList<InverseGravity>) savedInstanceState.getSerializable("birds");
+//        ArrayList<Powerdrink> powerdrinks = (ArrayList<Powerdrink>) savedInstanceState.getSerializable("birds");
+//        int fish_pos_y = savedInstanceState.getInt("fish_pos_y");
+//        int fish_velocity_y = savedInstanceState.getInt("fish_velocity_y");
+//        int bg_pos_x = savedInstanceState.getInt("bg_pos_x");
+////        int ggsmd = savedInstanceState.getInt("ggsmd");
+////        Bird bird = savedInstanceState.getParcelable("bird");
+//    }
 
 
     @Override

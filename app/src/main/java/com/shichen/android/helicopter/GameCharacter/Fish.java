@@ -19,7 +19,9 @@ public class Fish extends GameObject {
     public static int score;
 
 
-
+    static public int backup_position_x;
+    static public int backup_position_y;
+    static public int backup_speed_y;
     private double gravityG = 6;
     private double liftingAccelerate = -10;
     private double realAcceleration = 0;
@@ -38,6 +40,7 @@ public class Fish extends GameObject {
     private Animation unstoppableAnimation;
     static private long startTime;
     private float timeForScore;
+    static public int velocity_y;
 
     // Fish's constructor, pass in bitmap(which is a spritesheet),
     // and how many different image in that bitmap
@@ -90,6 +93,9 @@ public class Fish extends GameObject {
 
 
     public void update() {
+        backup_position_x = this.pos_x;
+        backup_position_y = this.pos_y;
+        backup_speed_y = this.Velocity_y;
         if (firstUpdate) {
             firstUpdate = false;
             startTime = System.nanoTime();
@@ -191,6 +197,11 @@ public class Fish extends GameObject {
     }
     public Rect getSmallerUnstoppableRectangle(){
         return new Rect(pos_x+342, pos_y + 272, pos_x + 504, pos_y + 340);
+    }
+
+
+    public static void setvelocity_y(int velocity_y) {
+        Fish.velocity_y = velocity_y;
     }
 
     public void enterUnstoppableMode(){

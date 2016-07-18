@@ -5,12 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by hsctn on 2016-07-16.
  */
-public class Powerdrink extends Bonus{
+public class Powerdrink extends Bonus implements Serializable {
     private int w;
     private int A;
     private Random random;
@@ -26,6 +27,7 @@ public class Powerdrink extends Bonus{
         this.w = 1;
         this.A = 0 -(int)(random.nextFloat()*500);
         this.Velocity_y = this.A * this.w;
+        this.bonusindex = 2;
 
         if((random.nextFloat()*2)<1) this.Velocity_y = -this.Velocity_y;
         this.acceleration_y = 0;

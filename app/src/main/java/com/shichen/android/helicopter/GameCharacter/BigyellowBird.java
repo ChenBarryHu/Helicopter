@@ -4,13 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by hsctn on 2016-06-25.
  */
-public class BigyellowBird extends Bird {
-    private int speed;
+public class BigyellowBird extends Bird implements Serializable {
+
     private int score;
     private Random random;
     private Animation animation;
@@ -27,18 +28,18 @@ public class BigyellowBird extends Bird {
         this.postures = new Bitmap[numOfPostures];
         this.postures = postures;
 
-        this.speed = Fish.score/100+7 + (int) (random.nextDouble() * 20);
-        if(this.speed>=90){
-            this.speed = 90;
+        this.Velocity_x = Fish.score/100+7 + (int) (random.nextDouble() * 20);
+        if(this.Velocity_x>=90){
+            this.Velocity_x = 90;
         }
         animation.setPostures(postures);
-        animation.setRestTimeforFish(100 - speed);
+        animation.setRestTimeforFish(100 - Velocity_x);
 
     }
 
     @Override
     public void update() {
-        pos_x -= speed;
+        pos_x -= Velocity_x;
         animation.update();
     }
 

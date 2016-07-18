@@ -19,10 +19,15 @@ import java.util.Random;
 public class BonusCommander {
 
 
+    static public ArrayList<Bonus> bonuses;
     // these are the monsters
-    public ArrayList<Golden> goldens;
-    public ArrayList<InverseGravity> silvens;
-    public ArrayList<Powerdrink> powerdrinks;
+//    static public ArrayList<Golden> goldens;
+//    static public ArrayList<InverseGravity> silvens;
+//    static public ArrayList<Powerdrink> powerdrinks;
+
+    public static int backup_currentBonusVelocity_y;
+    public static int backup_pos_x;
+    public static int back_up_pos_y;
 
 
     // this variable is used to determine when to create monsters
@@ -47,6 +52,7 @@ public class BonusCommander {
     public int unstoppableCount = 10;
     private long startInverseTime;
     private long startUnstoppableTime;
+    public static int bonusIndex;
 
     private Bitmap[] arrayOfResForGolden;
     private Bitmap[] arrayOfResForSilven;
@@ -54,9 +60,10 @@ public class BonusCommander {
 
     public BonusCommander(Context context, Fish fish) {
         this.fish = fish;
-        this.goldens = new ArrayList<Golden>();
-        this.silvens = new ArrayList<InverseGravity>();
-        this.powerdrinks = new ArrayList<Powerdrink>();
+        this.bonuses = new ArrayList<Bonus>();
+//        this.goldens = new ArrayList<Golden>();
+//        this.silvens = new ArrayList<InverseGravity>();
+//        this.powerdrinks = new ArrayList<Powerdrink>();
         this.random = new Random();
         this.context = context;
         resForGolden = BitmapFactory.decodeResource(context.getResources(), R.drawable.golden);
@@ -74,11 +81,13 @@ public class BonusCommander {
     }
 
     private int selectBonus() {
-        if(GamePanel.gravityInverseMode || GamePanel.unstoppableMode){ return 0;}
+        if (GamePanel.gravityInverseMode || GamePanel.unstoppableMode) {
+            return 0;
+        }
         double intermedia = random.nextDouble() * 100;
         if (intermedia <= 50) {
             return 2;
-        } else if(intermedia <= 90){
+        } else if (intermedia <= 90) {
             return 1;
         } else {
             return 0;
@@ -87,24 +96,24 @@ public class BonusCommander {
 
 
     public void update() {
-        if((Fish.score - scoreWhenEatCorn)> 1) GamePanel.addpoints =false;
-        if(GamePanel.gravityInverseMode){
-            if((System.nanoTime() - startInverseTime)>1000000000){
+        if ((Fish.score - scoreWhenEatCorn) > 1) GamePanel.addpoints = false;
+        if (GamePanel.gravityInverseMode) {
+            if ((System.nanoTime() - startInverseTime) > 1000000000) {
                 gravityInverseCount--;
                 startInverseTime = System.nanoTime();
             }
-            if(gravityInverseCount<0){
+            if (gravityInverseCount < 0) {
                 gravityReinverse();
             }
         }
 
 
-        if(GamePanel.unstoppableMode){
-            if((System.nanoTime() - startUnstoppableTime)>1000000000){
+        if (GamePanel.unstoppableMode) {
+            if ((System.nanoTime() - startUnstoppableTime) > 1000000000) {
                 unstoppableCount--;
                 startUnstoppableTime = System.nanoTime();
             }
-            if(unstoppableCount<0){
+            if (unstoppableCount < 0) {
                 leaveUnstoppableMode();
             }
         }
@@ -118,106 +127,71 @@ public class BonusCommander {
         elaspedTime = (System.nanoTime() - bonusStartAppearTime) / 1000000;
         eachUpdateLoopTime = (System.nanoTime() - drawGraphTime) / 1000000;
         drawGraphTime = System.nanoTime();
-        Log.e("BonusCommander called", "eachUpdateLoopTime is "+eachUpdateLoopTime);
+        Log.e("BonusCommander called", "eachUpdateLoopTime is " + eachUpdateLoopTime);
 
-        if(GamePanel.unstoppableMode) {
-            for (int i = 0; i < goldens.size(); i++) {
-                goldens.get(i).update(eachUpdateLoopTime);
-                if (collisionUnstoppableMode(goldens.get(i), fish)) {
-                    Log.e("collision appears", "!!!!!!!");
-                    Fish.score += 30;
-                    GamePanel.addpoints = true;
-                    this.scoreWhenEatCorn = Fish.score;
-                    goldens.remove(i);
-                    break;
-                }
-                if (goldens.get(i).getPos_x() < -70) {
-                    goldens.remove(i);
-                }
-            }
-//            for (int i = 0; i < silvens.size(); i++) {
-//                silvens.get(i).update(eachUpdateLoopTime);
-//                if (collisionUnstoppableMode(silvens.get(i), fish)) {
-//                    Log.e("collision appears", "!!!!!!!");
-//                    gravityInverse();
-//                    silvens.remove(i);
-//                    break;
-//                }
-//                if (silvens.get(i).getPos_x() < -70) {
-//                    silvens.remove(i);
-//                }
-//            }
-//            for (int i = 0; i < powerdrinks.size(); i++) {
-//                powerdrinks.get(i).update(eachUpdateLoopTime);
-//                if (collisionUnstoppableMode(powerdrinks.get(i), fish)) {
-//                    Log.e("collision appears", "!!!!!!!");
-//                    enterUnstoppableMode();
-//                    powerdrinks.remove(i);
-//                    break;
-//                }
-//                if (powerdrinks.get(i).getPos_x() < -70) {
-//                    powerdrinks.remove(i);
-//                }
-//            }
-        }else{
-            for (int i = 0; i < goldens.size(); i++) {
-                goldens.get(i).update(eachUpdateLoopTime);
-                if (collision(goldens.get(i), fish)) {
-                    Log.e("collision appears", "!!!!!!!");
-                    if (GamePanel.gravityInverseMode) {
-                        Fish.score += 15;
-                    } else {
-                        Fish.score += 5;
+        if (GamePanel.unstoppableMode) {
+            for (int i = 0; i < bonuses.size(); i++) {
+                int thisBonusIndex = bonuses.get(i).bonusindex;
+                bonuses.get(i).update(eachUpdateLoopTime);
+                if (collisionUnstoppableMode(bonuses.get(i), fish)) {
+                    if(thisBonusIndex == 0) {
+                        Log.e("collision appears", "!!!!!!!");
+                        Fish.score += 30;
+                        GamePanel.addpoints = true;
+                        this.scoreWhenEatCorn = Fish.score;
+                        bonuses.remove(i);
+                        break;
                     }
-                    GamePanel.addpoints = true;
-                    this.scoreWhenEatCorn = Fish.score;
-                    goldens.remove(i);
-                    break;
                 }
-                if (goldens.get(i).getPos_x() < -70) {
-                    goldens.remove(i);
-                }
-            }
-            for (int i = 0; i < silvens.size(); i++) {
-                silvens.get(i).update(eachUpdateLoopTime);
-                if (collision(silvens.get(i), fish)) {
-                    Log.e("collision appears", "!!!!!!!");
-                    gravityInverse();
-                    silvens.remove(i);
-                    break;
-                }
-                if (silvens.get(i).getPos_x() < -70) {
-                    silvens.remove(i);
-                }
-            }
-            for (int i = 0; i < powerdrinks.size(); i++) {
-                powerdrinks.get(i).update(eachUpdateLoopTime);
-                if (collision(powerdrinks.get(i), fish)) {
-                    Log.e("collision appears", "!!!!!!!");
-                    enterUnstoppableMode();
-                    powerdrinks.remove(i);
-                    break;
-                }
-                if (powerdrinks.get(i).getPos_x() < -70) {
-                    powerdrinks.remove(i);
+                if (bonuses.get(i).getPos_x() < -70) {
+                    bonuses.remove(i);
                 }
             }
 
+        } else {
+            for (int i = 0; i < bonuses.size(); i++) {
+                int thisBonusIndex = bonuses.get(i).bonusindex;
+                bonuses.get(i).update(eachUpdateLoopTime);
+                if (collision(bonuses.get(i), fish)) {
+                    if(thisBonusIndex==0) {
+                        Log.e("collision appears", "!!!!!!!");
+                        if (GamePanel.gravityInverseMode) {
+                            Fish.score += 15;
+                        } else {
+                            Fish.score += 5;
+                        }
+                        GamePanel.addpoints = true;
+                        this.scoreWhenEatCorn = Fish.score;
+                        bonuses.remove(i);
+                        break;
+                    }else if (thisBonusIndex==1){
+                        Log.e("collision appears", "!!!!!!!");
+                        gravityInverse();
+                        bonuses.remove(i);
+                        break;
+                    }else{
+                        Log.e("collision appears", "!!!!!!!");
+                        enterUnstoppableMode();
+                        bonuses.remove(i);
+                        break;
+                    }
+                }
+                if (bonuses.get(i).getPos_x() < -70) {
+                    bonuses.remove(i);
+                }
+            }
         }
 
 
-
-
-
-        int timeForBonusOut = 5000+(int)(random.nextFloat()*4000);
+        int timeForBonusOut = 5000 + (int) (random.nextFloat() * 4000);
         if (elaspedTime > timeForBonusOut) {
             int bonusSelector = selectBonus();
             if (bonusSelector == 0) {
-                goldens.add(new Golden(arrayOfResForGolden));
-            } else if(bonusSelector == 1){
-                silvens.add(new InverseGravity(arrayOfResForSilven));
-            }else{
-                powerdrinks.add(new Powerdrink(resForPowerDrink));
+                bonuses.add(new Golden(arrayOfResForGolden));
+            } else if (bonusSelector == 1) {
+                bonuses.add(new InverseGravity(arrayOfResForSilven));
+            } else {
+                bonuses.add(new Powerdrink(resForPowerDrink));
             }
             bonusStartAppearTime = System.nanoTime();
         }
@@ -225,15 +199,10 @@ public class BonusCommander {
 
 
     public void draw(Canvas canvas) {
-        for (Golden golden : goldens) {
-            golden.draw(canvas);
+        for (Bonus bonus : bonuses) {
+            bonus.draw(canvas);
         }
-        for (InverseGravity silven : silvens) {
-            silven.draw(canvas);
-        }
-        for (Powerdrink powerdrink : powerdrinks) {
-            powerdrink.draw(canvas);
-        }
+
     }
 
 
@@ -245,7 +214,7 @@ public class BonusCommander {
     }
 
     public boolean collisionUnstoppableMode(GameObject a, Fish b) {
-        if ((Rect.intersects(a.getRectangle(), b.getBiggerUnstoppableRectangle()))||
+        if ((Rect.intersects(a.getRectangle(), b.getBiggerUnstoppableRectangle())) ||
                 (Rect.intersects(a.getRectangle(), b.getSmallerUnstoppableRectangle()))) {
             return true;
         }
@@ -257,31 +226,39 @@ public class BonusCommander {
         this.ifBonusOccurInThisRound = ifBonusOccurInThisRound;
     }
 
-    public void gravityInverse(){
+    public void gravityInverse() {
         fish.gravityInverse();
         startInverseTime = System.nanoTime();
         GamePanel.gravityInverseMode = true;
     }
 
-    public void gravityReinverse(){
+    public void gravityReinverse() {
         fish.gravityInverse();
         GamePanel.gravityInverseMode = false;
         this.gravityInverseCount = 20;
     }
 
-    public void enterUnstoppableMode(){
+    public void enterUnstoppableMode() {
         startUnstoppableTime = System.nanoTime();
         GamePanel.unstoppableMode = true;
         fish.enterUnstoppableMode();
     }
 
-    public void leaveUnstoppableMode(){
+    public void leaveUnstoppableMode() {
         GamePanel.unstoppableMode = false;
         this.unstoppableCount = 10;
         fish.leaveUnstoppableMode();
     }
 
-    public void resume(){this.drawGraphTime = System.nanoTime();}
+    public void resume() {
+        this.drawGraphTime = System.nanoTime();
+    }
+
+    public static void backup() {
+        backup_currentBonusVelocity_y = bonuses.get(0).Velocity_y;
+        backup_pos_x = bonuses.get(0).pos_x;
+        back_up_pos_y = bonuses.get(0).pos_y;
+    }
 }
 
 

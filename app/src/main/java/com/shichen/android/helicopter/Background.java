@@ -12,7 +12,8 @@ public class Background {
     private Bitmap image;
                             // x and y determine the position of the left-top corner of the picture
                             // dx determine how much distance shift leftward every refreshment
-    private int x, y, dx;
+    private int  y, dx;
+    static public int x;
                             // constructor: get the resource (bitmap)
                             // of the background picture
     public Background(Bitmap res){
