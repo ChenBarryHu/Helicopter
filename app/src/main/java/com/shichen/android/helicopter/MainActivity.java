@@ -17,39 +17,42 @@ import com.shichen.android.helicopter.GameCharacter.Bird;
 
 public class  MainActivity extends  Activity  {
 
-    public static final String PREFS_NAME = "MyPrefsFile";
+    public static final String PREFS_NAME = "MyPrefsFile.txt";
     public FrameLayout game;
     public GamePanel gamePanel;
-    private SharedPreferences scorePrefs;
     //static public long bestScore;
 
     @Override
     protected void onPause() {
         super.onPause();
-        scorePrefs = getSharedPreferences(PREFS_NAME,0);
-        SharedPreferences.Editor ed = scorePrefs.edit();
-        ed.putLong("BESTSCORE", GamePanel.bestScore);
-        ed.commit();
+        SharedPreferences myPrefs = this.getSharedPreferences("mPrefs", MODE_PRIVATE);
+
+        SharedPreferences.Editor prefsEditor = myPrefs.edit();
+        prefsEditor.putInt("bestscore", (int) GamePanel.bestScore);
+        prefsEditor.commit();
     }
 
+//    public void makeToastAboutBestScore(){
+//        SharedPreferences spref = getSharedPreferences(PREFS_NAME,0);
+//        long bestscore = spref.getLong("BESTSCORE",0);
+//        Toast.makeText(this, "bestscore is " + bestscore,
+//                Toast.LENGTH_LONG).show();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scorePrefs = getSharedPreferences(PREFS_NAME,0);
-        long bestScore = scorePrefs.getLong("BESTSCORE",0);
+        //scorePrefs = getSharedPreferences(PREFS_NAME,0);
+        //long bestScore = scorePrefs.getLong("BESTSCORE",0);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // set the screen to full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-
-
-
+        SharedPreferences myPrefs1 = this.getSharedPreferences("mPrefs", MODE_PRIVATE);
+        int bestscore = myPrefs1.getInt("bestscore", 0);
         game = new FrameLayout(this);
-        gamePanel = new GamePanel (this);
+        gamePanel = new GamePanel (this, bestscore);
         LinearLayout gameWidgets = new LinearLayout (this);
 
 
