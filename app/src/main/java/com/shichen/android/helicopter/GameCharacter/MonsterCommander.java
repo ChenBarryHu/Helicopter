@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.shichen.android.helicopter.GamePanel;
 import com.shichen.android.helicopter.R;
@@ -84,6 +85,7 @@ public class MonsterCommander {
 
 
     public void update() {
+        Log.e("MonsterCommander:","MonsterCommander update!!!!!");
         if (!ifMonsterOccurInThisRound) {
             monsterStartAppearTime = System.nanoTime();
             ifMonsterOccurInThisRound = true;
@@ -100,6 +102,7 @@ public class MonsterCommander {
             for (int i = 0; i < monsters.size(); i++) {
 
                 monsters.get(i).update();
+                Log.e("MonsterCommander","Monster position_x"+monsters.get(i).pos_x);
                 if (collision(monsters.get(i), fish)) {
                     monsters.remove(i);
                     fish.setIfcurrentlyplaying(false);

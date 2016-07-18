@@ -24,6 +24,8 @@ public class Fish extends GameObject {
     static public int backup_speed_y;
     private double gravityG = 6;
     private double liftingAccelerate = -10;
+    private double defaultGravityG = 6;
+    private double defaultLiftingAccelerate = -10;
     private double realAcceleration = 0;
     private int width;
     private int height;
@@ -38,7 +40,7 @@ public class Fish extends GameObject {
     private boolean firstUpdate;
     private Animation animation;
     private Animation unstoppableAnimation;
-    static private long startTime;
+    static public long startTime;
     private float timeForScore;
     static public int velocity_y;
 
@@ -186,9 +188,16 @@ public class Fish extends GameObject {
 
 
     public void gravityInverse(){
-        gravityG = -gravityG;
+        gravityG = -defaultGravityG;
         //setGravityG(-getGravityG());
-        liftingAccelerate = -liftingAccelerate;
+        liftingAccelerate = -defaultLiftingAccelerate;
+        //setLiftingAccelerate(-getLiftingAccelerate());
+    }
+
+    public void gravityReinverse(){
+        gravityG = defaultGravityG;
+        //setGravityG(-getGravityG());
+        liftingAccelerate = defaultLiftingAccelerate;
         //setLiftingAccelerate(-getLiftingAccelerate());
     }
 
@@ -222,5 +231,10 @@ public class Fish extends GameObject {
     public void resume(){
         this.startTime = System.nanoTime();
     }
+
+    public void restoreVelocity(){
+        this.Velocity_y = backup_speed_y;
+    }
+
 
 }

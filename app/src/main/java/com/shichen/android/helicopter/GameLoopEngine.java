@@ -51,7 +51,7 @@ public class GameLoopEngine extends Thread {
         int fpsCountCumulator = 0;
         long whileloopcount = 0;
 
-
+        gamePanel.thread.drawOnceBackGround();
         while (ifRunning) {   // when ifRunning is true, the loop will keep ifRunning
             lastTime = thisTime;
             thisTime = System.nanoTime() / 1000000000.0f;
@@ -136,5 +136,28 @@ public class GameLoopEngine extends Thread {
 
     public boolean isIfPauseGame() {
         return ifPauseGame;
+    }
+
+    public void drawOnceBackGround(){
+        canvas = null;
+        try {
+            canvas = this.surfaceHolder.lockCanvas();
+            synchronized (surfaceHolder) {
+
+                Log.e("gameEngine","pointB");
+                this.gamePanel.draw(canvas);
+            }
+        } catch (Exception e) {
+        } finally {
+            if (canvas != null) {
+                try {
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
     }
 }

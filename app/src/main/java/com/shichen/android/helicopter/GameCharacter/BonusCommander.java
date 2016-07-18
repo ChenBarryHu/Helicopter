@@ -27,7 +27,8 @@ public class BonusCommander {
 
     public static int backup_currentBonusVelocity_y;
     public static int backup_pos_x;
-    public static int back_up_pos_y;
+    public static int backup_pos_y;
+    public static boolean hasBonusNow;
 
 
     // this variable is used to determine when to create monsters
@@ -86,7 +87,7 @@ public class BonusCommander {
         }
         double intermedia = random.nextDouble() * 100;
         if (intermedia <= 50) {
-            return 2;
+            return 1;
         } else if (intermedia <= 90) {
             return 1;
         } else {
@@ -233,7 +234,7 @@ public class BonusCommander {
     }
 
     public void gravityReinverse() {
-        fish.gravityInverse();
+        fish.gravityReinverse();
         GamePanel.gravityInverseMode = false;
         this.gravityInverseCount = 20;
     }
@@ -255,9 +256,10 @@ public class BonusCommander {
     }
 
     public static void backup() {
+        hasBonusNow = (bonuses.size()==1);
         backup_currentBonusVelocity_y = bonuses.get(0).Velocity_y;
         backup_pos_x = bonuses.get(0).pos_x;
-        back_up_pos_y = bonuses.get(0).pos_y;
+        backup_pos_y = bonuses.get(0).pos_y;
     }
 }
 
