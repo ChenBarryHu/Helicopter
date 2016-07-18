@@ -86,12 +86,12 @@ public class BonusCommander {
             return 0;
         }
         double intermedia = random.nextDouble() * 100;
-        if (intermedia <= 50) {
-            return 1;
-        } else if (intermedia <= 90) {
+        if (intermedia <= 40) {
+            return 0;
+        } else if (intermedia <= 70) {
             return 1;
         } else {
-            return 0;
+            return 2;
         }
     }
 
