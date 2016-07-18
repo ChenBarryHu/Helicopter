@@ -41,7 +41,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Background bg;                  // this is a background object,provide bitmap, position, update method and draw  method for app background
     final public Fish fish;                      // we will create our player character which is a cute little fish!!!
     private PuffCommander puffCommander;
-    private MonsterCommander monsterCommander;
+    final public MonsterCommander monsterCommander;
     final public BonusCommander bonusCommander;
     private Explosion explosion;
     ExecutorService threadPoolExecutor;
@@ -92,6 +92,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.gb));// initialize the background object, give it the image resource which is a bitmap
         fish = new Fish(BitmapFactory.decodeResource(getResources(), R.drawable.swimfish),BitmapFactory.decodeResource(getResources(), R.drawable.unstoppableswimminginmage));
         bonusCommander = new BonusCommander(getContext(), fish);
+        monsterCommander = new MonsterCommander(getContext(), fish);
 
     }
 
@@ -102,7 +103,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         explosionStart =false;
         explosionFinish = false;
         puffCommander = new PuffCommander(fish);
-        monsterCommander = new MonsterCommander(getContext(), fish);
         explosion = new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion));
         if(thread==null){
             thread = new GameLoopEngine(getHolder(), this);
@@ -247,7 +247,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void drawText(Canvas canvas)
     {
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.WHITE);
         paint.setTextSize(30);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         canvas.drawText("Score: " + fish.getScore(), 10, HEIGHT - 60, paint);
@@ -331,7 +331,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if(resetModeStart){
             return;
         }else{
-            thread.setIfPauseGame(true);
+            if(thread !=null) {
+                thread.setIfPauseGame(true);
+            }
         }
     }
 
