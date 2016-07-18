@@ -17,10 +17,8 @@ import com.shichen.android.helicopter.GameCharacter.Bird;
 
 public class  MainActivity extends  Activity  {
 
-    public static final String PREFS_NAME = "MyPrefsFile.txt";
     public FrameLayout game;
     public GamePanel gamePanel;
-    //static public long bestScore;
 
     @Override
     protected void onPause() {
@@ -32,18 +30,12 @@ public class  MainActivity extends  Activity  {
         prefsEditor.commit();
     }
 
-//    public void makeToastAboutBestScore(){
-//        SharedPreferences spref = getSharedPreferences(PREFS_NAME,0);
-//        long bestscore = spref.getLong("BESTSCORE",0);
-//        Toast.makeText(this, "bestscore is " + bestscore,
-//                Toast.LENGTH_LONG).show();
-//    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //scorePrefs = getSharedPreferences(PREFS_NAME,0);
-        //long bestScore = scorePrefs.getLong("BESTSCORE",0);
+
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -91,24 +83,12 @@ public class  MainActivity extends  Activity  {
     }
 
 
-//    public void onClick(View v){
-//
-//    }
 
-//    public void showPopup() {
-//        // Anchor popoup with layout to "center" menu
-//
-//        PopupMenu popup = new PopupMenu(this, game);
-//        popup.setOnMenuItemClickListener(this);
-//        popup.getMenuInflater().inflate(R.layout.menu, popup.getMenu());
-//        popup.show();
-//    }
 
     @Override
     public void onResume() {
         super.onResume();
     }
-//
 
 
 
