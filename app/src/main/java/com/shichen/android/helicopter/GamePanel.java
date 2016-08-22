@@ -17,9 +17,6 @@ import com.shichen.android.helicopter.GameCharacter.Fish;
 import com.shichen.android.helicopter.GameCharacter.MonsterCommander;
 import com.shichen.android.helicopter.GameCharacter.PuffCommander;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-
 /**
  * Created by hsctn on 2016-06-23.
  */
@@ -31,7 +28,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     // these are constant for background
     public static final int WIDTH = 1280;   // these are the actual width and
     public static final int HEIGHT = 640;   // height of the background picture
-    public static final int MOVESPEED = -5; // this is the distance background move left
+    public static final int MOVESPEED = -4; // this is the distance background move left
     // every time we update
 
 
@@ -44,8 +41,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     final public MonsterCommander monsterCommander;
     final public BonusCommander bonusCommander;
     private Explosion explosion;
-    ExecutorService threadPoolExecutor;
-    Future longRunningTaskFuture;
+//    ExecutorService threadPoolExecutor;
+//    Future longRunningTaskFuture;
 
 
 
@@ -59,7 +56,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public static boolean addpoints = false;
     public static boolean gravityInverseMode = false;
     public static boolean unstoppableMode = false;
-    public boolean ifPauseGame=false;
+    //public boolean ifPauseGame=false;
 
 
 
@@ -197,13 +194,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     // loop to update the background and fish
     public void update() {
 
-        Log.e("GamePanel update called","point E");
+        //Log.e("GamePanel update called","point E");
         if (fish.getIfcurrentlyplaying()) {
             bg.update();
             fish.update();
             puffCommander.update();
             monsterCommander.update();
-            Log.e("Commander update called","Commander");
+            //Log.e("Commander update called","Commander");
             bonusCommander.update();
 
 
@@ -219,11 +216,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 fishNeedDisappear = true;
                 explosion.setX(fish.getPos_x()-60);
                 explosion.setY(fish.getPos_y()-70);
-
             }
             if(!newGameWellPrepared) {
                 explosion.update();
-
                 if (justOpened) {
                     explosionStart = false;
                     explosionFinish = true;
@@ -282,7 +277,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             paint1.setTextSize(40);
             paint1.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             canvas.drawText("PRESS TO START", WIDTH/2-50, HEIGHT/2-130, paint1);
-
             paint1.setTextSize(20);
             canvas.drawText("PRESS AND HOLD TO GO UP", WIDTH/2-50, HEIGHT/2 -110, paint1);
             canvas.drawText("RELEASE TO GO DOWN", WIDTH/2-50, HEIGHT/2 -90, paint1);
@@ -339,10 +333,5 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void resumeGame(){
         thread.setIfPauseGame(false);
-    }
-
-
-    public static void setBestScore(long bestScore) {
-        GamePanel.bestScore = bestScore;
     }
 }

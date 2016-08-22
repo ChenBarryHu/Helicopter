@@ -10,10 +10,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
-
 import com.shichen.android.helicopter.GamePanel;
 import com.shichen.android.helicopter.R;
-
 import java.util.ArrayList;
 import java.util.Random;
 

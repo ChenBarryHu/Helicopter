@@ -1,5 +1,6 @@
 package com.shichen.android.helicopter;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -12,6 +13,7 @@ import android.view.SurfaceHolder;
 public class GameLoopEngine extends Thread {
     private int FPS = 40;                      // how many frame we want per second
     private double framecap = 1.0 / FPS;       // this is the time of each frame of this game
+
 
     private SurfaceHolder surfaceHolder;       // surfaceholder and gamePanel object
     final private GamePanel gamePanel;               //    use surfaceholder to get canvas, use gamePanel to
@@ -34,10 +36,10 @@ public class GameLoopEngine extends Thread {
 
 
     @Override
-    public void run() {              // because Mainthread extends thread, so should override run() method
+    public void run() {              // because GameLoopEngine extends thread, so should override run() method
 
-        //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         ifRunning = true;
+
 
         thisTime = System.nanoTime() / 1000000000.0f;  // this is for first loop
         // thisTime and lastTime are uesd to calculate passedTime
@@ -45,11 +47,13 @@ public class GameLoopEngine extends Thread {
         double unprocessedTime = 0;                           // this is used to determine when to update
 
 
+
+
         // the following three variables are used for debugging
         // they are used for printing frequency of while loop and update
         double fpsTimeCumulator = 0;
         int fpsCountCumulator = 0;
-        long whileloopcount = 0;
+        //long whileloopcount = 0;
 
         gamePanel.thread.drawOnceBackGround();
         while (ifRunning) {   // when ifRunning is true, the loop will keep ifRunning
@@ -58,11 +62,11 @@ public class GameLoopEngine extends Thread {
             passedTime = thisTime - lastTime;
             unprocessedTime += passedTime;
             fpsTimeCumulator += passedTime;
-            whileloopcount++;
-            Log.e("gameEngine","pointD");
+            //whileloopcount++;
+            //Log.e("gameEngine","pointD");
             //Log.i("Fish :", "the score of fish is "+ Fish.score);
             if(ifPauseGame) {
-                Log.e("gameEngine","pointC");
+                //Log.e("gameEngine","pointC");
                 if(unprocessedTime > framecap){
                     unprocessedTime -= framecap;
                     fpsCountCumulator++;
@@ -98,11 +102,16 @@ public class GameLoopEngine extends Thread {
                 Log.e("gameEngine","pointA");
                 try {
                     canvas = this.surfaceHolder.lockCanvas();
+//                    final float scaleFactorX = (float) gamePanel.getWidth() / (200 * 1.f);     // getWidth(), getHeight() gets
+//                    final float scaleFactorY = (float) gamePanel.getHeight() / (HEIGHT * 1.f); // the screenwidth and screenheight
+//                    canvas.scale(scaleFactorX, scaleFactorY);  // scale the  canvas
                     synchronized (surfaceHolder) {
 
                         Log.e("gameEngine","pointB");
+                        canvas.drawBitmap(BitmapFactory.decodeResource(gamePanel.getResources(), R.drawable.smallblue), 0, 0, null);
                         this.gamePanel.update();           // we call the methods in gamePanel
                         this.gamePanel.draw(canvas);
+
                     }
                 } catch (Exception e) {
                 } finally {
@@ -134,9 +143,9 @@ public class GameLoopEngine extends Thread {
         this.ifPauseGame = ifPauseGame;
     }
 
-    public boolean isIfPauseGame() {
-        return ifPauseGame;
-    }
+//    public boolean isIfPauseGame() {
+//        return ifPauseGame;
+//    }
 
     public void drawOnceBackGround(){
         canvas = null;
@@ -144,7 +153,7 @@ public class GameLoopEngine extends Thread {
             canvas = this.surfaceHolder.lockCanvas();
             synchronized (surfaceHolder) {
 
-                Log.e("gameEngine","pointB");
+                //Log.e("gameEngine","pointB");
                 this.gamePanel.draw(canvas);
             }
         } catch (Exception e) {

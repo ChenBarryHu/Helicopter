@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="signin" type="id"/>
+    <item name="signout" type="id"/>
+    <item name="achievement" type="id"/>
+    <item name="leaderboard" type="id"/>
+</resources>
