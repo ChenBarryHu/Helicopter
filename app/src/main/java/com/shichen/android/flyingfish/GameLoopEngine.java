@@ -99,19 +99,18 @@ public class GameLoopEngine extends Thread {
                 //      GamePanel, that means we draw something in the surfaceView
                 //      (which is GamePanel)
                 canvas = null;
-                Log.e("gameEngine","pointA");
+                //Log.e("gameEngine","pointA");
                 try {
                     canvas = this.surfaceHolder.lockCanvas();
-//                    final float scaleFactorX = (float) gamePanel.getWidth() / (200 * 1.f);     // getWidth(), getHeight() gets
-//                    final float scaleFactorY = (float) gamePanel.getHeight() / (HEIGHT * 1.f); // the screenwidth and screenheight
-//                    canvas.scale(scaleFactorX, scaleFactorY);  // scale the  canvas
+                    final float scaleFactorX = (float) gamePanel.getWidth() / (1280 * 1.f);     // getWidth(), getHeight() gets
+                    final float scaleFactorY = (float) gamePanel.getHeight() / (640 * 1.f); // the screenwidth and screenheight
+                    canvas.scale(scaleFactorX, scaleFactorY);  // scale the  canvas
                     synchronized (surfaceHolder) {
 
-                        Log.e("gameEngine","pointB");
+                        //Log.e("gameEngine","pointB");
                         canvas.drawBitmap(BitmapFactory.decodeResource(gamePanel.getResources(), R.drawable.smallblue), 0, 0, null);
                         this.gamePanel.update();           // we call the methods in gamePanel
                         this.gamePanel.draw(canvas);
-
                     }
                 } catch (Exception e) {
                 } finally {
@@ -165,8 +164,6 @@ public class GameLoopEngine extends Thread {
                     e.printStackTrace();
                 }
             }
-
         }
-
     }
 }

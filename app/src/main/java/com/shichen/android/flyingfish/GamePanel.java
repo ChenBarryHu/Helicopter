@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -115,7 +114,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     // changes (format or size) have been made to the surface.
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     // This is called immediately before a surface is being destroyed.
@@ -149,6 +147,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 newGameWellPrepared = false;
             } else if(fish.getIfcurrentlyplaying()){
                 fish.setIfScreenPressed(true);
+                //Log.e("Screen is pressed","From GamePanel");
             }
             return true;
         }
@@ -156,19 +155,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             fish.setIfScreenPressed(false);
             return true;
         }
-
         return super.onTouchEvent(event);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        Log.e("GamePanel draw called","point F");
-        final float scaleFactorX = (float) getWidth() / (WIDTH * 1.f);     // getWidth(), getHeight() gets
-        final float scaleFactorY = (float) getHeight() / (HEIGHT * 1.f); // the screenwidth and screenheight
+        //Log.e("GamePanel draw called","point F");
+        //final float scaleFactorX = (float) getWidth() / (WIDTH * 1.f);     // getWidth(), getHeight() gets
+        //final float scaleFactorY = (float) getHeight() / (HEIGHT * 1.f); // the screenwidth and screenheight
         super.draw(canvas);
         if (canvas != null) {
-            final int savedState = canvas.save();      // I don't know what does it means
-            canvas.scale(scaleFactorX, scaleFactorY);  // scale the  canvas
+            final int savedState = canvas.save();      // I don't know what does it mean
+            //canvas.scale(scaleFactorX, scaleFactorY);  // scale the  canvas
             //Log.e("draw"," background drawn!!!!!!!!!!!!!!!!!!!!!!!!");
             bg.draw(canvas);                           // draw the background and fish!!!!
             if(!fishNeedDisappear) {
@@ -178,7 +176,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 puffCommander.draw(canvas);
             }
             monsterCommander.draw(canvas);
-            Log.e("Commander draw called","Commander");
             bonusCommander.draw(canvas);
             if(explosionStart&& (!explosionFinish))
             {
@@ -291,8 +288,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         monsterCommander.monsters.clear();
         bonusCommander.bonuses.clear();
         puffCommander.puff.clear();
-
-
         // reset the status of monstercommander, fish, and puffCommander
         monsterCommander.setIfMonsterOccurInThisRound(false);
         bonusCommander.setIfBonusOccurInThisRound(false);
@@ -332,7 +327,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
-
     public void resumeGame(){
         thread.setIfPauseGame(false);
     }

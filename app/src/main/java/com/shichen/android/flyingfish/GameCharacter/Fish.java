@@ -3,6 +3,7 @@ package com.shichen.android.flyingfish.GameCharacter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.shichen.android.flyingfish.GamePanel;
 
@@ -51,7 +52,6 @@ public class Fish extends GameObject {
     // the initial y position of the fish is the center of the screen(y axis)
     // heightInSpriteSheet and widthInSpriteSheet determines how much we should cut the bitmap of sprite sheet
     public Fish(Bitmap setOfPostures, Bitmap unstoppableSpriteSheet) {
-
         this.width = 64;
         this.height = 64;
         this.numOfPostures = 6;
@@ -61,11 +61,9 @@ public class Fish extends GameObject {
         this.unstoppableAnimation = new Animation();
         pos_x = 230;
         pos_y = GamePanel.HEIGHT / 2;
-
         Velocity_y = 0;
         this.score = 0;
         timeForScore = 0;
-
         firstUpdate = true;     // used to calculate elapsed time keep reading the
         // code and you will get it
 
@@ -115,16 +113,14 @@ public class Fish extends GameObject {
             }
             timeForScore-=10;
         }
-
         startTime = System.nanoTime();    //update the startTime
-
         if(GamePanel.unstoppableMode) {
             unstoppableAnimation.update();
         }else{
             animation.update();
         }
-
         if (ifScreenPressed) {
+            Log.e("fish up"," ifScreenPressed is true");
             realAcceleration = gravityG + liftingAccelerate;
             double dY = Velocity_y * elapsed + 0.5 * realAcceleration * elapsed * elapsed;
             pos_y = (int) (pos_y + dY);
@@ -235,6 +231,4 @@ public class Fish extends GameObject {
     public void restoreVelocity(){
         this.Velocity_y = backup_speed_y;
     }
-
-
 }
