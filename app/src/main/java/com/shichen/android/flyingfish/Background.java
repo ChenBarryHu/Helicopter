@@ -33,7 +33,6 @@ public class Background {
 
                             // this method will be called in Game Enging loop
     public void draw(Canvas canvas){
-        //Log.e("draw"," background drawn!!!!!!!!!!!!!!!!!!!!!!!!");
         canvas.drawBitmap(image, x, y, null);
         if(x<0){
             canvas.drawBitmap(image, x+GamePanel.WIDTH-5, y,null);
